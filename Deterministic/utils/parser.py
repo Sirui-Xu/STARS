@@ -11,6 +11,7 @@ parser.add_argument('--input_n',type=int,default=10,help="number of model's inpu
 parser.add_argument('--output_n',type=int,default=10,help="number of model's output frames")
 parser.add_argument('--test_output_n',type=int,default=10,help="number of model's test frames")
 parser.add_argument('--skip_rate',type=int,default=1,choices=[1,5],help='rate of frames to skip,defaults=1 for H36M')
+parser.add_argument('--global_translation', action='store_true',help='predicting global translation for H36M')
 
 #ARGS FOR THE MODEL
 

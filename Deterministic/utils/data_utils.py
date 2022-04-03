@@ -6,7 +6,7 @@ import torch
 # from torch.autograd.variable import Variable
 import os
 from utils import forward_kinematics
-
+import copy
 
 def rotmat2euler(R):
     """
@@ -582,6 +582,53 @@ def expmap2xyz_torch(expmap):
     """
     parent, offset, rotInd, expmapInd = forward_kinematics._some_variables()
     xyz = forward_kinematics.fkl_torch(expmap, parent, offset, rotInd, expmapInd)
+    return xyz
+
+
+def revert_coordinate_space(channels, R0, T0):
+    """
+    Bring a series of poses to a canonical form so they are facing the camera when they start.
+
+    Args
+    channels: n-by-99 matrix of poses: 3 + 32 * 3
+    R0: 3x3 rotation for the first frame
+    T0: 1x3 position for the first frame
+    Returns
+    channels_rec: The passed poses, but the first has T0 and R0, and the
+                    rest of the sequence is modified accordingly.
+    """
+    n, d = channels.shape
+
+    channels_rec = copy.copy(channels)
+    R_prev = R0
+    T_prev = T0
+    rootRotInd = np.arange(3,6)
+
+    # Loop through the passed posses
+    # Seems that expmap store the diff between frame with previous frame?
+    for ii in range(n):
+        R_diff = expmap2rotmat( channels[ii, rootRotInd] )
+        R = R_diff.dot( R_prev )
+
+        channels_rec[ii, rootRotInd] = rotmat2expmap(R)
+        T = T_prev + ((R_prev.T).dot( np.reshape(channels[ii,:3],[3,1]))).reshape(-1)
+        channels_rec[ii,:3] = T
+        T_prev = T
+        R_prev = R
+
+    return channels_rec
+
+
+def expmap2xyz(expmap, mode="global"):
+    """
+    convert expmaps to joint locations
+    :param expmap: N*99
+    :return: N*32*3
+    """
+    parent, offset, rotInd, expmapInd = forward_kinematics._some_variables()
+    if mode == "global":
+        expmap = revert_coordinate_space(expmap, np.eye(3), np.zeros(3))
+    xyz = forward_kinematics.fkl_torch(torch.from_numpy(expmap).float().cuda(), parent, offset, rotInd, expmapInd, mode)
     return xyz
 
 

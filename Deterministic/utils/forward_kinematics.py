@@ -216,7 +216,7 @@ def _some_variables_cmu():
     return parent, offset, posInd, expmapInd
 
 
-def fkl_torch(angles, parent, offset, rotInd, expmapInd):
+def fkl_torch(angles, parent, offset, rotInd, expmapInd, mode="local"):
     """
     pytorch version of fkl.
 
@@ -232,10 +232,12 @@ def fkl_torch(angles, parent, offset, rotInd, expmapInd):
     n = angles.data.shape[0]
     j_n = offset.shape[0]
     p3d = Variable(torch.from_numpy(offset)).float().cuda().unsqueeze(0).repeat(n, 1, 1)
+    if mode=="global":
+        p3d[:, 0] = angles[:, 0:3]
     angles = angles[:, 3:].contiguous().view(-1, 3)
     R = data_utils.expmap2rotmat_torch(angles).view(n, j_n, 3, 3)
     for i in np.arange(1, j_n):
-        if parent[i] > 0:
+        if parent[i] >= 0:
             R[:, i, :, :] = torch.matmul(R[:, i, :, :], R[:, parent[i], :, :]).clone()
             p3d[:, i, :] = torch.matmul(p3d[0, i, :], R[:, parent[i], :, :]) + p3d[:, parent[i], :]
     return p3d

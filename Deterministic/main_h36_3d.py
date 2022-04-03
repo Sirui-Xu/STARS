@@ -1,5 +1,4 @@
 import os 
-from utils import h36motion3d as datasets
 from torch.utils.data import DataLoader
 # from model import *
 import matplotlib.pyplot as plt
@@ -16,15 +15,20 @@ from model import Model
 
 device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
 print('Using device: %s'%device)
-dim_used = np.array([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25,
+dim_used = np.array([0, 1, 2, 3, 4, 5, 18, 19, 20, 33, 34, 35, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25,
                     26, 27, 28, 29, 30, 31, 32, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
                     46, 47, 51, 52, 53, 54, 55, 56, 57, 58, 59, 63, 64, 65, 66, 67, 68,
                     75, 76, 77, 78, 79, 80, 81, 82, 83, 87, 88, 89, 90, 91, 92])
+if not args.global_translation:
+  dim_used = dim_used[12:]
+  from utils import h36motion3d as datasets
+else:
+  from utils import h36motion3dab as datasets
 
 model = Model(args.input_dim,args.input_n,
-                          args.output_n,args.st_gcnn_dropout,dim_used.shape[0]//3).to(device)
+                          args.output_n,args.st_gcnn_dropout,dim_used).to(device)
 print('total number of parameters of the network is: '+str(sum(p.numel() for p in model.parameters() if p.requires_grad)))
-model_name='h36_3d_'+str(args.output_n)+'frames_ckpt'
+model_name='h36_3d_'+str(args.output_n)+'frames_ckpt_'+['local','global'][args.global_translation]
 
 def train():
     dataset = datasets.Datasets(args.data_dir,args.input_n,args.output_n,args.skip_rate, split=0)
@@ -176,7 +180,7 @@ if __name__ == '__main__':
     elif args.mode=='viz':
        model.load_state_dict(torch.load(os.path.join(args.model_path,model_name)))
        model.eval()
-       visualize(args.input_n,args.output_n,args.visualize_from,args.data_dir,model,device,args.n_viz,args.skip_rate,args.actions_to_consider)
+       visualize(args.input_n,args.output_n,args.visualize_from,args.data_dir,model,device,args.n_viz,args.skip_rate,args.actions_to_consider,args.global_translation,model_name)
 
 
 

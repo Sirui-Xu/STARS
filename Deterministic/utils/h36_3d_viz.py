@@ -7,10 +7,9 @@ from torch.utils.data import DataLoader
 import matplotlib.pyplot as plt
 from mpl_toolkits.mplot3d import Axes3D
 import matplotlib.animation as animation
-from utils import h36motion3d as datasets
-from utils.loss_funcs import mpjpe_error
+from utils.loss_funcs import final_mpjpe_error
 from utils.data_utils import define_actions
-
+import os
 
 
 def create_pose(ax,plots,vals,pred=True,update=False):
@@ -100,10 +99,21 @@ def update(num,data_gt,data_pred,plots_gt,plots_pred,fig,ax):
 # In[12]:
 
 
-def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rate,actions):
+def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rate,actions,global_translation,model_name):
     
+    dim_used = np.array([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25,
+                         26, 27, 28, 29, 30, 31, 32, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+                         46, 47, 51, 52, 53, 54, 55, 56, 57, 58, 59, 63, 64, 65, 66, 67, 68,
+                         75, 76, 77, 78, 79, 80, 81, 82, 83, 87, 88, 89, 90, 91, 92])
     actions=define_actions(actions)
+    if not global_translation:
+        dim_used = dim_used[12:]
+        from utils import h36motion3d as datasets
+    else:
+        from utils import h36motion3dab as datasets
     
+    os.makedirs('./gifs/'+model_name, exist_ok=True)
+
     for action in actions:
     
         if visualize_from=='train':
@@ -113,10 +123,6 @@ def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rat
         elif visualize_from=='test':
             loader=datasets.Datasets(path,input_n,output_n,skip_rate, split=2,actions=[action])
             
-        dim_used = np.array([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25,
-                        26, 27, 28, 29, 30, 31, 32, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-                        46, 47, 51, 52, 53, 54, 55, 56, 57, 58, 59, 63, 64, 65, 66, 67, 68,
-                        75, 76, 77, 78, 79, 80, 81, 82, 83, 87, 88, 89, 90, 91, 92])
       # joints at same loc
         joint_to_ignore = np.array([16, 20, 23, 24, 28, 31])
         index_to_ignore = np.concatenate((joint_to_ignore * 3, joint_to_ignore * 3 + 1, joint_to_ignore * 3 + 2))
@@ -151,9 +157,7 @@ def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rat
             
             sequences_gt=sequences_gt.view(-1,output_n,32,3)
             
-            loss=mpjpe_error(all_joints_seq,sequences_gt)# # both must have format (batch,T,V,C)
-    
-            
+            loss=final_mpjpe_error(all_joints_seq,sequences_gt)# # both must have format (batch,T,V,C)
     
             data_pred=torch.squeeze(all_joints_seq,0).cpu().data.numpy()/1000 # in meters
             data_gt=torch.squeeze(sequences_gt,0).cpu().data.numpy()/1000
