@@ -121,7 +121,7 @@ def train():
 
 def test():
   assert args.output_n >= args.test_output_n
-  model.load_state_dict(torch.load(os.path.join(args.model_path,model_name)))
+  model.load_state_dict(torch.load(os.path.join(args.model_path)))
   model.eval()
   accum_loss=0  
   n_batches=0 # number of batches for all the sequences
@@ -178,7 +178,7 @@ if __name__ == '__main__':
     elif args.mode == 'test':
       test()
     elif args.mode=='viz':
-       model.load_state_dict(torch.load(os.path.join(args.model_path,model_name)))
+       model.load_state_dict(torch.load(os.path.join(args.model_path)))
        model.eval()
        visualize(args.input_n,args.output_n,args.visualize_from,args.data_dir,model,device,args.n_viz,args.skip_rate,args.actions_to_consider,args.global_translation,model_name)
 

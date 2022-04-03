@@ -300,17 +300,17 @@ class Model(nn.Module):
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
         # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
-        self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))   
+        # self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
+        #                                        joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))   
         
-        self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
+        # self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
+        # # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
-        self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
+        # self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
+        #                                        joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
         
-        self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
+        # self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
+        # # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
         self.st_gcnns.append(ST_GCNN_layer(128,input_channels,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout,version=0,dim_used=dim_used))  

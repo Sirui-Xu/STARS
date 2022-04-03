@@ -101,10 +101,10 @@ def update(num,data_gt,data_pred,plots_gt,plots_pred,fig,ax,input_n):
 
 def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rate,actions,global_translation,model_name):
     
-    dim_used = np.array([6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25,
-                         26, 27, 28, 29, 30, 31, 32, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
-                         46, 47, 51, 52, 53, 54, 55, 56, 57, 58, 59, 63, 64, 65, 66, 67, 68,
-                         75, 76, 77, 78, 79, 80, 81, 82, 83, 87, 88, 89, 90, 91, 92])
+    dim_used = np.array([0, 1, 2, 3, 4, 5, 18, 19, 20, 33, 34, 35, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 21, 22, 23, 24, 25,
+                    26, 27, 28, 29, 30, 31, 32, 36, 37, 38, 39, 40, 41, 42, 43, 44, 45,
+                    46, 47, 51, 52, 53, 54, 55, 56, 57, 58, 59, 63, 64, 65, 66, 67, 68,
+                    75, 76, 77, 78, 79, 80, 81, 82, 83, 87, 88, 89, 90, 91, 92])
     actions=define_actions(actions)
     if not global_translation:
         dim_used = dim_used[12:]
@@ -146,7 +146,8 @@ def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rat
             sequences_train=batch[:, 0:input_n, dim_used].view(-1,input_n,len(dim_used)//3,3).permute(0,3,1,2)
             sequences_gt=batch[:, 0:input_n+output_n, :]
             
-            sequences_predict=modello(sequences_train).permute(0,1,3,2).contiguous().view(-1,output_n,len(dim_used))
+            sequences_predict, sequences_predict_all=modello(sequences_train)
+            sequences_predict=sequences_predict.permute(0,1,3,2).contiguous().view(-1,output_n,len(dim_used))
             
             all_joints_seq[:,input_n:input_n+output_n,dim_used] = sequences_predict
             

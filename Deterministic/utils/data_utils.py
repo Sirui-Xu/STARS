@@ -585,6 +585,11 @@ def expmap2xyz_torch(expmap):
     return xyz
 
 
+def expmap2xyz_torch_cmu(expmap):
+    parent, offset, rotInd, expmapInd = forward_kinematics._some_variables_cmu()
+    xyz = forward_kinematics.fkl_torch(expmap, parent, offset, rotInd, expmapInd)
+    return xyz
+
 def revert_coordinate_space(channels, R0, T0):
     """
     Bring a series of poses to a canonical form so they are facing the camera when they start.
