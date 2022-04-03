@@ -107,7 +107,7 @@ def quat2expmap(q):
     Raises
       ValueError if the l2 norm of the quaternion is not close to 1
     """
-    if (np.abs(np.linalg.norm(q) - 1) > 1e-3):
+    if (np.abs(np.linalg.norm(q) - 1) > 1e-2):
         raise (ValueError, "quat2expmap: input quaternion is not norm 1")
 
     sinhalftheta = np.linalg.norm(q[1:])

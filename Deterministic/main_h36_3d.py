@@ -25,7 +25,7 @@ if not args.global_translation:
 else:
   from utils import h36motion3dab as datasets
 
-model = Model(args.input_dim,args.input_n,
+model = Model(3,args.input_n,
                           args.output_n,args.st_gcnn_dropout,dim_used).to(device)
 print('total number of parameters of the network is: '+str(sum(p.numel() for p in model.parameters() if p.requires_grad)))
 model_name='h36_3d_'+str(args.output_n)+'frames_ckpt_'+['local','global'][args.global_translation]

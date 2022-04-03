@@ -26,7 +26,7 @@ class Datasets(Dataset):
         :param split: 0 train, 1 testing, 2 validation
         :param sample_rate:
         """
-        self.path_to_data = os.path.join(data_dir,'h3.6m\dataset')
+        self.path_to_data = os.path.join(data_dir,'h3.6m/dataset')
         self.split = split
         self.in_n = input_n
         self.out_n = output_n

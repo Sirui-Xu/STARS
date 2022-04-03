@@ -12,7 +12,7 @@ from utils.data_utils import define_actions
 import os
 
 
-def create_pose(ax,plots,vals,pred=True,update=False):
+def create_pose(ax,plots,vals,pred=True,update=False,prediction=False):
 
             
     
@@ -42,7 +42,7 @@ def create_pose(ax,plots,vals,pred=True,update=False):
     J   = np.array([touple[1] for touple in connect])
 # Left / right indicator
     LR  = np.array([LR[a] or LR[b] for a,b in connect])
-    if pred:
+    if pred and prediction:
         lcolor = "#9b59b6"
         rcolor = "#2ecc71"
     else:
@@ -73,19 +73,19 @@ def create_pose(ax,plots,vals,pred=True,update=False):
 # In[11]:
 
 
-def update(num,data_gt,data_pred,plots_gt,plots_pred,fig,ax):
+def update(num,data_gt,data_pred,plots_gt,plots_pred,fig,ax,input_n):
     
     gt_vals=data_gt[num]
     pred_vals=data_pred[num]
-    plots_gt=create_pose(ax,plots_gt,gt_vals,pred=False,update=True)
-    plots_pred=create_pose(ax,plots_pred,pred_vals,pred=True,update=True)
+    plots_gt=create_pose(ax,plots_gt,gt_vals,pred=False,update=True,prediction=num>=input_n)
+    plots_pred=create_pose(ax,plots_pred,pred_vals,pred=True,update=True,prediction=num>=input_n)
     
     
 
     
     
     r = 0.75
-    xroot, zroot, yroot = gt_vals[0,0], gt_vals[0,1], gt_vals[0,2]
+    xroot, zroot, yroot = data_gt[0][0,0], data_gt[0][0,1], data_gt[0][0,2]
     ax.set_xlim3d([-r+xroot, r+xroot])
     ax.set_ylim3d([-r+yroot, r+yroot])
     ax.set_zlim3d([-r+zroot, r+zroot])
@@ -141,21 +141,21 @@ def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rat
         for cnt,batch in enumerate(loader): 
             batch = batch.to(device) 
             
-            all_joints_seq=batch.clone()[:, input_n:input_n+output_n,:]
+            all_joints_seq=batch.clone()[:, 0:input_n+output_n,:]
             
             sequences_train=batch[:, 0:input_n, dim_used].view(-1,input_n,len(dim_used)//3,3).permute(0,3,1,2)
-            sequences_gt=batch[:, input_n:input_n+output_n, :]
+            sequences_gt=batch[:, 0:input_n+output_n, :]
             
             sequences_predict=modello(sequences_train).permute(0,1,3,2).contiguous().view(-1,output_n,len(dim_used))
             
-            all_joints_seq[:,:,dim_used] = sequences_predict
+            all_joints_seq[:,input_n:input_n+output_n,dim_used] = sequences_predict
             
-            all_joints_seq[:,:,index_to_ignore] = all_joints_seq[:,:,index_to_equal]
+            all_joints_seq[:,input_n:input_n+output_n,index_to_ignore] = all_joints_seq[:,input_n:input_n+output_n,index_to_equal]
             
             
-            all_joints_seq=all_joints_seq.view(-1,output_n,32,3)
+            all_joints_seq=all_joints_seq.view(-1,input_n+output_n,32,3)
             
-            sequences_gt=sequences_gt.view(-1,output_n,32,3)
+            sequences_gt=sequences_gt.view(-1,input_n+output_n,32,3)
             
             loss=final_mpjpe_error(all_joints_seq,sequences_gt)# # both must have format (batch,T,V,C)
     
@@ -191,10 +191,10 @@ def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rat
             ax.set_title('loss in mm is: '+str(round(loss.item(),4))+' for action : '+str(action)+' for '+str(output_n)+' frames')
     
             line_anim = animation.FuncAnimation(fig, update, output_n, fargs=(data_gt,data_pred,gt_plots,pred_plots,
-                                                                       fig,ax),interval=70, blit=False)
+                                                                       fig,ax,input_n),interval=70, blit=False)
             plt.show()
             
-            line_anim.save('human_viz.gif',writer='pillow')
+            line_anim.save('./gifs/'+model_name+'/human_viz_{}_{}.gif'.format(str(action), cnt),writer='pillow')
     
             
             if cnt==n_viz-1:
