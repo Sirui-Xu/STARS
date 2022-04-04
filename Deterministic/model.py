@@ -257,6 +257,7 @@ class Model(nn.Module):
                  output_time_frame,
                  st_gcnn_dropout,
                  dim_used,
+                 n_pre=20,
                  bias=True):
         
         super(Model,self).__init__()
@@ -266,8 +267,6 @@ class Model(nn.Module):
         joints_to_consider=len(dim_used)
         self.joints_to_consider=joints_to_consider
         self.st_gcnns=nn.ModuleList()
-
-        n_pre = input_time_frame + output_time_frame
         self.st_gcnns.append(ST_GCNN_layer(input_channels,128,[3,1],1,n_pre,
                                            joints_to_consider,st_gcnn_dropout,version=0,dim_used=dim_used))
 

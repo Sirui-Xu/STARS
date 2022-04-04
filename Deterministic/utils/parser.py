@@ -10,7 +10,8 @@ parser.add_argument('--data_dir',type=str,default='../datasets/',help='path to t
 parser.add_argument('--input_n',type=int,default=10,help="number of model's input frames")
 parser.add_argument('--output_n',type=int,default=10,help="number of model's output frames")
 parser.add_argument('--test_output_n',type=int,default=10,help="number of model's test frames")
-parser.add_argument('--skip_rate',type=int,default=1,choices=[1,5],help='rate of frames to skip,defaults=1 for H36M')
+parser.add_argument('--n_pre',type=int,default=35,help="number of dct coefficients")
+parser.add_argument('--skip_rate',type=int,default=2,help='rate of frames to skip,defaults=2 for H36M')
 parser.add_argument('--global_translation', action='store_true',help='predicting global translation for H36M')
 
 #ARGS FOR THE MODEL

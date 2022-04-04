@@ -23,12 +23,13 @@ if not args.global_translation:
   dim_used = dim_used[12:]
   from utils import h36motion3d as datasets
 else:
+  dim_used.sort()
   from utils import h36motion3dab as datasets
 
 model = Model(3,args.input_n,
-                          args.output_n,args.st_gcnn_dropout,dim_used).to(device)
+                          args.output_n,args.st_gcnn_dropout,dim_used,args.n_pre).to(device)
 print('total number of parameters of the network is: '+str(sum(p.numel() for p in model.parameters() if p.requires_grad)))
-model_name='h36_3d_'+str(args.output_n)+'frames_ckpt_'+['local','global'][args.global_translation]
+model_name='h36_3d_'+str(args.input_n)+'_'+str(args.output_n)+'_'+str(args.skip_rate)+'_'+str(args.n_pre)+'_'+'ckpt_'+['local','global'][args.global_translation]
 
 def train():
     dataset = datasets.Datasets(args.data_dir,args.input_n,args.output_n,args.skip_rate, split=0)

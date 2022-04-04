@@ -16,7 +16,7 @@ https://github.com/wei-mao-2019/HisRepItself/blob/master/utils/h36motion3d.py
 
 class Datasets(Dataset):
 
-    def __init__(self, data_dir,input_n,output_n,skip_rate, actions=None, split=0):
+    def __init__(self, data_dir,input_n,output_n,skip_rate,actions=None,split=0):
         """
         :param path_to_data:
         :param actions:
@@ -30,7 +30,7 @@ class Datasets(Dataset):
         self.split = split
         self.in_n = input_n
         self.out_n = output_n
-        self.sample_rate = 2
+        self.sample_rate = skip_rate
         self.p3d = {}
         self.data_idx = []
         seq_len = self.in_n + self.out_n
@@ -67,18 +67,19 @@ class Datasets(Dataset):
                         n, d = the_sequence.shape
                         the_sequence = np.array(the_sequence)
 
-                        p3d = data_utils.expmap2xyz(the_sequence, "global")
+                        the_sequence = data_utils.expmap2xyz(the_sequence, "global")
 
-                        even_list = range(0, n, self.sample_rate)
-                        num_frames = len(even_list)
-                        p3d = p3d[even_list]
-                        self.p3d[key] = p3d.view(num_frames, -1).cpu().data.numpy()
+                        for bias in range(self.sample_rate):
+                            even_list = range(bias, n, self.sample_rate)
+                            num_frames = len(even_list)
+                            p3d = the_sequence[even_list]
+                            self.p3d[key] = p3d.view(num_frames, -1).cpu().numpy()
 
-                        valid_frames = np.arange(0, num_frames - seq_len + 1, skip_rate)
-                        tmp_data_idx_1 = [key] * len(valid_frames)
-                        tmp_data_idx_2 = list(valid_frames)
-                        self.data_idx.extend(zip(tmp_data_idx_1, tmp_data_idx_2))
-                        key += 1
+                            valid_frames = np.arange(0, num_frames - seq_len + 1)
+                            tmp_data_idx_1 = [key] * len(valid_frames)
+                            tmp_data_idx_2 = list(valid_frames)
+                            self.data_idx.extend(zip(tmp_data_idx_1, tmp_data_idx_2))
+                            key += 1
                 else:
                     print("Reading subject {0}, action {1}, subaction {2}".format(subj, action, 1))
                     filename = '{0}/S{1}/{2}_{3}.txt'.format(self.path_to_data, subj, action, 1)

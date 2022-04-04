@@ -55,7 +55,7 @@ def create_pose(ax,plots,vals,pred=True,update=False,prediction=False):
         y = np.array( [vals[I[i], 2], vals[J[i], 2]] )
         if not update:
 
-            if i ==0:
+            if i ==0 and not pred:
                 plots.append(ax.plot(x, y, z, lw=2,linestyle='--' ,c=lcolor if LR[i] else rcolor,label=['GT' if not pred else 'Pred']))
             else:
                 plots.append(ax.plot(x, y, z, lw=2,linestyle='--', c=lcolor if LR[i] else rcolor))
@@ -65,6 +65,11 @@ def create_pose(ax,plots,vals,pred=True,update=False,prediction=False):
             plots[i][0].set_ydata(y)
             plots[i][0].set_3d_properties(z)
             plots[i][0].set_color(lcolor if LR[i] else rcolor)
+    #         if i == 0 and pred and prediction:
+    #             plots[i][0].set_label(['GT' if not pred else 'Pred'])
+        
+    # if i == 0 and pred and prediction:
+    #     ax.legend(loc='lower left')
     
     return plots
    # ax.legend(loc='lower left')
@@ -110,6 +115,7 @@ def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rat
         dim_used = dim_used[12:]
         from utils import h36motion3d as datasets
     else:
+        dim_used.sort()
         from utils import h36motion3dab as datasets
     
     os.makedirs('./gifs/'+model_name, exist_ok=True)
@@ -191,7 +197,7 @@ def visualize(input_n,output_n,visualize_from,path,modello,device,n_viz,skip_rat
             ax.set_zlabel('Z')
             ax.set_title('loss in mm is: '+str(round(loss.item(),4))+' for action : '+str(action)+' for '+str(output_n)+' frames')
     
-            line_anim = animation.FuncAnimation(fig, update, output_n, fargs=(data_gt,data_pred,gt_plots,pred_plots,
+            line_anim = animation.FuncAnimation(fig, update, input_n + output_n, fargs=(data_gt,data_pred,gt_plots,pred_plots,
                                                                        fig,ax,input_n),interval=70, blit=False)
             plt.show()
             
