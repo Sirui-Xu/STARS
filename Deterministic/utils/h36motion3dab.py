@@ -54,6 +54,8 @@ class Datasets(Dataset):
                       "RightForeArm",
                       "RightHand", "RightHandThumb", "Site", "R_Wrist_End", "Site"]
 
+        SEED = 1234567890
+        rng = np.random.RandomState(SEED)
         subs = subs[split]
         key = 0
         for subj in subs:
@@ -67,7 +69,7 @@ class Datasets(Dataset):
                         n, d = the_sequence.shape
                         the_sequence = np.array(the_sequence)
 
-                        the_sequence = data_utils.expmap2xyz(the_sequence, "global")
+                        the_sequence = data_utils.expmap2xyz_global(the_sequence, rng)
 
                         for bias in range(self.sample_rate):
                             even_list = range(bias, n, self.sample_rate)
@@ -91,7 +93,7 @@ class Datasets(Dataset):
                     the_sequence1 = np.array(the_sequence1)
                     # the_seq1 = torch.from_numpy(the_sequence1).float().cuda()
                     # the_seq1[:, 0:6] = 0
-                    p3d1 = data_utils.expmap2xyz(the_sequence1, "global")
+                    p3d1 = data_utils.expmap2xyz_global(the_sequence1, rng)
                     # self.p3d[(subj, action, 1)] = p3d1.view(num_frames1, -1).cpu().data.numpy()
                     self.p3d[key] = p3d1[even_list].view(num_frames1, -1).cpu().data.numpy()
 
@@ -106,7 +108,7 @@ class Datasets(Dataset):
                     the_sequence2 = np.array(the_sequence2)
                     # the_seq2 = torch.from_numpy(the_sequence2).float().cuda()
                     # the_seq2[:, 0:6] = 0
-                    p3d2 = data_utils.expmap2xyz(the_sequence2, "global")
+                    p3d2 = data_utils.expmap2xyz_global(the_sequence2, rng)
 
                     # self.p3d[(subj, action, 2)] = p3d2.view(num_frames2, -1).cpu().data.numpy()
                     self.p3d[key + 1] = p3d2[even_list].view(num_frames2, -1).cpu().data.numpy()

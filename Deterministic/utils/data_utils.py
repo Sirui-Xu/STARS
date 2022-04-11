@@ -624,16 +624,23 @@ def revert_coordinate_space(channels, R0, T0):
     return channels_rec
 
 
-def expmap2xyz(expmap, mode="global"):
+def expmap2xyz_global(expmap, rng):
     """
     convert expmaps to joint locations
     :param expmap: N*99
     :return: N*32*3
     """
     parent, offset, rotInd, expmapInd = forward_kinematics._some_variables()
-    if mode == "global":
-        expmap = revert_coordinate_space(expmap, np.eye(3), np.zeros(3))
-    xyz = forward_kinematics.fkl_torch(torch.from_numpy(expmap).float().cuda(), parent, offset, rotInd, expmapInd, mode)
+    expmap_process = None
+    while expmap_process is None:
+        try:
+            rotation = np.eye(3, 3)
+            theta = np.pi * rng.random() * 2
+            rotation[0, 0], rotation[0, 2], rotation[2, 0], rotation[2, 2] = np.cos(theta), -np.sin(theta), np.sin(theta), np.cos(theta)
+            expmap_process = revert_coordinate_space(expmap, rotation, rng.rand(3) * 2000)
+        except:
+            pass
+    xyz = forward_kinematics.fkl_torch(torch.from_numpy(expmap_process).float().cuda(), parent, offset, rotInd, expmapInd, "global")
     return xyz
 
 
