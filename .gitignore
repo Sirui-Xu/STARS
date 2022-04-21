@@ -131,3 +131,5 @@ dmypy.json
 .pyre/
 
 *.DS_Store
+Deterministic_ab/
+*gifs/
