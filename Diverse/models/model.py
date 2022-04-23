@@ -1,33 +1,17 @@
 #!/usr/bin/env python
 # coding: utf-8
 
-
 import torch
 import torch.nn as nn
 import math
 import numpy as np
 
-
-
-
 class ConvTemporalGraphical(nn.Module):
     #Source : https://github.com/yysijie/st-gcn/blob/master/net/st_gcn.py
     r"""The basic module for applying a graph convolution.
-    Args:
-        in_channels (int): Number of channels in the input sequence data
-        out_channels (int): Number of channels produced by the convolution
-        kernel_size (int): Size of the graph convolving kernel
-        t_kernel_size (int): Size of the temporal convolving kernel
-        t_stride (int, optional): Stride of the temporal convolution. Default: 1
-        t_padding (int, optional): Temporal zero-padding added to both sides of
-            the input. Default: 0
-        t_dilation (int, optional): Spacing between temporal kernel elements.
-            Default: 1
-        bias (bool, optional): If ``True``, adds a learnable bias to the output.
-            Default: ``True``
     Shape:
         - Input: Input graph sequence in :math:`(N, in_channels, T_{in}, V)` format
-        - Output: Outpu graph sequence in :math:`(N, out_channels, T_{out}, V)` format
+        - Output: Output graph sequence in :math:`(N, out_channels, T_{out}, V)` format
         where
             :math:`N` is a batch size,
             :math:`K` is the spatial kernel size, as :math:`K == kernel_size[1]`,
@@ -65,21 +49,9 @@ class ConvTemporalGraphical(nn.Module):
         return x.contiguous() 
 
 
-class ConvTemporalGraphicalEnhanced(nn.Module):
+class ConvTemporalGraphicalV1(nn.Module):
     #Source : https://github.com/yysijie/st-gcn/blob/master/net/st_gcn.py
     r"""The basic module for applying a graph convolution.
-    Args:
-        in_channels (int): Number of channels in the input sequence data
-        out_channels (int): Number of channels produced by the convolution
-        kernel_size (int): Size of the graph convolving kernel
-        t_kernel_size (int): Size of the temporal convolving kernel
-        t_stride (int, optional): Stride of the temporal convolution. Default: 1
-        t_padding (int, optional): Temporal zero-padding added to both sides of
-            the input. Default: 0
-        t_dilation (int, optional): Spacing between temporal kernel elements.
-            Default: 1
-        bias (bool, optional): If ``True``, adds a learnable bias to the output.
-            Default: ``True``
     Shape:
         - Input: Input graph sequence in :math:`(N, in_channels, T_{in}, V)` format
         - Output: Outpu graph sequence in :math:`(N, out_channels, T_{out}, V)` format
@@ -92,15 +64,15 @@ class ConvTemporalGraphicalEnhanced(nn.Module):
     def __init__(self,
                  time_dim,
                  joints_dim,
-                 dim_used = [ 2,  3,  4,  5,  7,  8,  9, 10, 12, 13, 14, 15, 17,
-                             18, 19, 21, 22, 25, 26, 27, 29, 30],
-                 parents=[-1, 0, 1, 2, 3, 4, 0, 6, 7, 8, 9, 0, 11, 12, 13, 14, 12,
-                                          16, 17, 18, 19, 20, 19, 22, 12, 24, 25, 26, 27, 28, 27, 30],
-                 joints_left=[6, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 22, 23],
-                 joints_right=[1, 2, 3, 4, 5, 24, 25, 26, 27, 28, 29, 30, 31],
+                 pose_info
     ):
-        super(ConvTemporalGraphicalEnhanced,self).__init__()
-        
+        super(ConvTemporalGraphicalV1,self).__init__()
+        parents=pose_info['parents']
+        joints_left=list(pose_info['joints_left'])
+        joints_right=list(pose_info['joints_right'])
+        keep_joints=pose_info['keep_joints']
+        dim_use = list(keep_joints)
+        # print(dim_use)
         self.A=nn.Parameter(torch.FloatTensor(time_dim, joints_dim, joints_dim)) #learnable, graph-agnostic 3-d adjacency matrix(or edge importance matrix)
         stdv = 1. / math.sqrt(self.A.size(1))
         self.A.data.uniform_(-stdv,stdv)
@@ -115,44 +87,64 @@ class ConvTemporalGraphicalEnhanced(nn.Module):
         stdv = 1. / math.sqrt(self.Z.size(2))
         self.Z.data.uniform_(-stdv,stdv)
         '''
-        self.A_s = torch.zeros((1,joints_dim,joints_dim), requires_grad=False)
-        for i, dim in enumerate(dim_used):
+        self.A_s = torch.zeros((1,joints_dim,joints_dim), requires_grad=False, dtype=torch.float)
+        for i, dim in enumerate(dim_use):
             self.A_s[0][i][i] = 1
-            if parents[dim] in dim_used:
-                parent_index = dim_used.index(parents[dim])
+            if parents[dim] in dim_use:
+                parent_index = dim_use.index(parents[dim])
                 self.A_s[0][i][parent_index] = 1
                 self.A_s[0][parent_index][i] = 1
             if dim in joints_left:
                 index = joints_left.index(dim)
                 right_dim = joints_right[index]
-                right_index = dim_used.index(right_dim)
-                if right_dim in dim_used:
+                right_index = dim_use.index(right_dim)
+                if right_dim in dim_use:
                     self.A_s[0][i][right_index] = 1
                     self.A_s[0][right_index][i] = 1
+        # self.A_s = torch.zeros((1,joints_dim,joints_dim), requires_grad=False, dtype=torch.float)
+        # root_nodes = []
+        # for i, dim in enumerate(dim_use):
+        #     self.A_s[0][i][i] = 1
+        #     parent_index = parents[i]
+        #     if parent_index == -1:
+        #         for k in root_nodes:
+        #             self.A_s[0][i][k] = 1
+        #             self.A_s[0][k][i] = 1
+        #         root_nodes.append(i)
+        #     elif parent_index >= 0:
+        #         self.A_s[0][i][parent_index] = 1
+        #         self.A_s[0][parent_index][i] = 1
+        #     if i in joints_left:
+        #         index = joints_left.index(i)
+        #         right_dim = joints_right[index]
 
-        self.T_s = torch.zeros((1,time_dim,time_dim), requires_grad=False)
-        for i in range(time_dim):
-            if i > 0:
-                self.T_s[0][i-1][i] = 1
-                self.T_s[0][i][i-1] = 1
+        #         self.A_s[0][i][right_dim] = 1
+        #         self.A_s[0][right_dim][i] = 1
 
-            if i < time_dim - 1:
-                self.T_s[0][i+1][i] = 1
-                self.T_s[0][i][i+1] = 1
+        # self.T_s = torch.zeros((1,time_dim,time_dim), requires_grad=False, dtype=torch.float)
+        # for i in range(time_dim):
+        #     if i > 0:
+        #         self.T_s[0][i-1][i] = 1
+        #         self.T_s[0][i][i-1] = 1
+
+        #     if i < time_dim - 1:
+        #         self.T_s[0][i+1][i] = 1
+        #         self.T_s[0][i][i+1] = 1
             
-            self.T_s[0][i][i] = 1
+        #     self.T_s[0][i][i] = 1
 
         self.joints_dim = joints_dim
         self.time_dim = time_dim
 
     def forward(self, x):
-        T = self.T * self.T_s.to(x.device)
+        # T = self.T * self.T_s.to(x.device)
         A = self.A * self.A_s.to(x.device)
-        x = torch.einsum('nctv,vtq->ncqv', (x, T))
+        x = torch.einsum('nctv,vtq->ncqv', (x, self.T))
         ## x=self.prelu(x)
         x = torch.einsum('nctv,tvw->nctw', (x, A))
         ## x = torch.einsum('nctv,wvtq->ncqw', (x, self.Z))
         return x.contiguous() 
+
 
 class ST_GCNN_layer(nn.Module):
     """
@@ -179,7 +171,7 @@ class ST_GCNN_layer(nn.Module):
                  dropout,
                  bias=True,
                  version=0,
-                 dim_used=None):
+                 pose_info=None):
         
         super(ST_GCNN_layer,self).__init__()
         self.kernel_size = kernel_size
@@ -190,7 +182,7 @@ class ST_GCNN_layer(nn.Module):
         if version == 0:
             self.gcn=ConvTemporalGraphical(time_dim,joints_dim) # the convolution layer
         elif version == 1:
-            self.gcn=ConvTemporalGraphicalEnhanced(time_dim,joints_dim,dim_used=dim_used)
+            self.gcn = ConvTemporalGraphicalV1(time_dim,joints_dim,pose_info=pose_info)
 
         self.tcn = nn.Sequential(
             nn.Conv2d(
@@ -204,9 +196,6 @@ class ST_GCNN_layer(nn.Module):
             nn.Dropout(dropout, inplace=True),
         )
 
-
-            
-        
                 
         
         if stride != 1 or in_channels != out_channels: 
@@ -252,74 +241,88 @@ class Model(nn.Module):
     """
 
     def __init__(self,
+                 n_pre,
+                 nk,
                  input_channels,
                  input_time_frame,
                  output_time_frame,
                  st_gcnn_dropout,
-                 dim_used,
-                 n_pre=20,
-                 bias=True):
+                 joints_to_consider,
+                 pose_info):
         
         super(Model,self).__init__()
         self.input_time_frame=input_time_frame
         self.output_time_frame=output_time_frame
-        dim_used = sorted([dim_used[i] // 3 for i in range(0, dim_used.shape[0], 3)])
-        joints_to_consider=len(dim_used)
         self.joints_to_consider=joints_to_consider
         self.st_gcnns=nn.ModuleList()
+
+        nk1, nk2 = nk
         self.st_gcnns.append(ST_GCNN_layer(input_channels,128,[3,1],1,n_pre,
-                                           joints_to_consider,st_gcnn_dropout,version=0,dim_used=dim_used))
+                                           joints_to_consider,st_gcnn_dropout,pose_info=pose_info))
 
         self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
+                                               joints_to_consider,st_gcnn_dropout, version=1, pose_info=pose_info))
             
         self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
-                                       
+                                               joints_to_consider,st_gcnn_dropout, version=1, pose_info=pose_info))
+        
+            # st_gcnns = nn.ModuleList()               
         self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))   
+                                               joints_to_consider,st_gcnn_dropout, pose_info=pose_info))   
+        
+        self.T1=nn.Parameter(torch.FloatTensor(nk1, 1, 128, n_pre, 1)) 
+        stdv = 1. / math.sqrt(self.T1.size(1))
+        self.T1.data.uniform_(-stdv,stdv)
+
+        self.A1=nn.Parameter(torch.FloatTensor(nk2, 1, 128, 1, joints_to_consider)) 
+        stdv = 1. / math.sqrt(self.A1.size(1))
+        self.A1.data.uniform_(-stdv,stdv)
+
+        self.T2=nn.Parameter(torch.FloatTensor(nk2, 1, 128, n_pre, 1)) 
+        stdv = 1. / math.sqrt(self.T2.size(1))
+        self.T2.data.uniform_(-stdv,stdv)
+
+        self.A2=nn.Parameter(torch.FloatTensor(nk1, 1, 128, 1, joints_to_consider)) 
+        stdv = 1. / math.sqrt(self.A2.size(1))
+        self.A2.data.uniform_(-stdv,stdv)
+
+        self.st_gcnns.append(ST_GCNN_layer(128,128,[3,1],1,n_pre,
+                                               joints_to_consider,st_gcnn_dropout, version=1, pose_info=pose_info))   
+        self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
+
+        self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
+                                               joints_to_consider,st_gcnn_dropout, pose_info=pose_info))   
         
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
         self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
+                                               joints_to_consider,st_gcnn_dropout, version=1, pose_info=pose_info))
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
-
-        self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))   
-        
-        self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
-
-        self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
-        
-        self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
-
-        # self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-        #                                        joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))   
-        
-        # self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
-
-        # self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-        #                                        joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
-        
-        # self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
         self.st_gcnns.append(ST_GCNN_layer(128,input_channels,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=0,dim_used=dim_used))  
-        self.st_gcnns[-1].gcn.A = self.st_gcnns[0].gcn.A    
+                                               joints_to_consider,st_gcnn_dropout, pose_info=pose_info))     
 
+        self.e_mu_1 = ST_GCNN_layer(64,32,[3,1],1,n_pre,
+                                               joints_to_consider,st_gcnn_dropout, pose_info=pose_info)
+        self.e_mu_2 = nn.Linear(32, 64)
+        self.e_logvar_1 = ST_GCNN_layer(64,32,[3,1],1,n_pre,
+                                        joints_to_consider,st_gcnn_dropout, pose_info=pose_info)
+        self.e_logvar_2 = nn.Linear(32, 64)
+        # self.st_gcnns.append(ST_GCNN_layer(128,input_channels,[3,1],1,n_pre,
+        #                                        joints_to_consider,st_gcnn_dropout, keep_joints=keep_joints))
+                # at this point, we must permute the dimensions of the gcn network, from (N,C,T,V) into (N,T,C,V)           
+        # self.txcnns.append(CNN_layer(input_time_frame,output_time_frame,[3, 1],txc_dropout, groups=5)) # with kernel_size[3,3] the dimensinons of C,V will be maintained       
+        # self.mlp_1 = nn.Linear(input_time_frame, 128)
+        # self.relu = nn.PReLU()
+        # self.mlp_2 = nn.Linear(128, output_time_frame)
+
+        self.nk1 = nk1
+        self.nk2 = nk2
         self.dct_m, self.idct_m = self.get_dct_matrix(self.input_time_frame + self.output_time_frame)
         self.n_pre = n_pre
 
     def get_dct_matrix(self, N, is_torch=True):
-        dct_m = np.eye(N)
+        dct_m = np.eye(N, dtype=np.float32)
         for k in np.arange(N):
             for i in np.arange(N):
                 w = np.sqrt(2 / N)
@@ -332,24 +335,78 @@ class Model(nn.Module):
             idct_m = torch.from_numpy(idct_m)
         return dct_m, idct_m     
 
-    def forward(self, x):
+    def reparameterize(self, x):
+        N, C, T, V = x.shape
+        x_mu = self.e_mu_1(x).mean(2).mean(2)
+        x_logvar = self.e_logvar_1(x).mean(2).mean(2)
+
+        # x = x.permute(0, 2, 3, 1)
+        # NTVC
+        mu = self.e_mu_2(x_mu).unsqueeze(2).unsqueeze(3).repeat((1, 1, T, V))
+        logvar = self.e_logvar_2(x_logvar).unsqueeze(2).unsqueeze(3).repeat((1, 1, T, V))
+        std = torch.exp(0.5*logvar)
+        eps = torch.randn_like(std)
+        return mu + eps * std, mu, logvar
+
+    def forward(self, x, y0):
+        # TNVC -> NCTV
+        x = x.view(x.shape[0], x.shape[1], -1, 3)
+        x = x.permute(1, 3, 0, 2)
         idx_pad = list(range(self.input_time_frame)) + [self.input_time_frame - 1] * self.output_time_frame
         y = torch.zeros((x.shape[0], x.shape[1], self.output_time_frame, x.shape[3])).to(x.device)
-        inp = torch.cat([x, y], dim=2).permute(0, 2, 1, 3)
+        inp = torch.cat([x, y], dim=2).permute(0, 2, 1, 3) #NCTV -> NTCV
         N, T, C, V = inp.shape
-        dct_m = self.dct_m.to(x.device).float()
-        idct_m = self.idct_m.to(x.device).float()
+        dct_m = self.dct_m.to(x.device)
+        idct_m = self.idct_m.to(x.device)
         inp = inp.reshape([N, T, C * V])
         inp = torch.matmul(dct_m[:self.n_pre], inp[:, idx_pad, :]).reshape([N, -1, C, V]).permute(0, 2, 1, 3)
         res = inp
         x = inp
 
-        for gcn in (self.st_gcnns):
+        N, C, T, V = inp.shape
+
+        for gcn in (self.st_gcnns[:-5]):
             x = gcn(x)
 
-        x += res
-        x = x.permute(0, 2, 1, 3).reshape([N, -1, C * V])
-        x_re = torch.matmul(idct_m[:, :self.n_pre], x).reshape([N, T, C, V])
-        x = x_re
+        result = [0 for _ in range(self.nk1 * self.nk2)]
+        for i in range(self.nk1):
+            # CT -> NCTV
+            t = self.T1[i]
+            for j in range(self.nk2):
+                # CV -> NCTV
+                a = self.A1[j]
+                result[i * self.nk2 + j] = x + t + a
         
-        return x[:, self.input_time_frame:], x_re
+        result = torch.cat(result, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
+        for gcn in (self.st_gcnns[-5:-4]):
+            result = gcn(result)
+
+        x_rand, mu, logvar = self.reparameterize(result)
+        result = torch.cat([result, x_rand], dim=1)
+
+        for gcn in (self.st_gcnns[-4:-3]):
+            result = gcn(result)
+
+        result = result.reshape([self.nk1 * self.nk2, N, -1, T, V])
+        result2 = [0 for _ in range(self.nk1 * self.nk2)]
+        for i in range(self.nk2):
+            # CT -> NCTV
+            t = self.T2[i]
+            for j in range(self.nk1):
+                # CV -> NCTV
+                a = self.A2[j]
+                result2[i * self.nk1 + j] = result[j * self.nk2 + i] + t + a
+        result = torch.cat(result2, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
+        
+        for gcn in (self.st_gcnns[-3:]):
+            result = gcn(result)
+
+        N, C, T, V = res.shape
+        result += res.repeat(self.nk1 * self.nk2, 1, 1, 1)
+        # print(result.shape, self.nk1 * self.nk2 * N, C * V)
+        x = result.permute(0, 2, 1, 3).reshape([self.nk1 * self.nk2 * N, -1, C * V])
+        x_re = torch.matmul(idct_m[:, :self.n_pre], x).reshape([self.nk1 * self.nk2, N, -1, C, V])
+        
+        # MNTCV -> TNMVC
+        x = x_re.permute(2, 1, 0, 4, 3).contiguous().view(-1, y0.shape[1], self.nk1 * self.nk2, y0.shape[2], 1).squeeze(4)
+        return x, mu, logvar
