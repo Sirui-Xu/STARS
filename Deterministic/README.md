@@ -14,41 +14,41 @@ H3.6m
 `-- S11
 ```
 
-Put the all downloaded datasets in ../datasets directory.
+Put the all downloaded datasets in ./datasets directory.
 
 ### Train
 The arguments for running the code are defined in [parser.py](utils/parser.py). We have used the following commands for training the network on Human3.6M with skeleton representation:
  
 ```bash
- python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --data_dir ${to human3.6m}
+ python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --data_dir ./datasets
  ```
 
 It's able to predict the future motion considering the global translation
 
 ```bash
- python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --global_translation --data_dir ${to human3.6m}
+ python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --global_translation --data_dir ./datasets
  ```
 
 We provide the pretrained model with 10 historical sequence frames and 25 future predicted frames following the literature.
  ### Test
  To test on the pretrained model, we have used the following commands:
  ```bash
- python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --test_output_n ${index of the test frame} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --mode test --model_path ./checkpoints/CKPT_3D_H36M --data_dir ${to human3.6m}
+ python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --test_output_n ${index of the test frame} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --mode test --model_path ./checkpoints/CKPT_3D_H36M --data_dir ./datasets
   ```
 
  With global translation, we have the following commands:
   ```bash
- python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --test_output_n ${index of the test frame} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --mode test --model_path ./checkpoints/CKPT_3D_H36M --global_translation --data_dir ${to human3.6m}
+ python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --test_output_n ${index of the test frame} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --mode test --model_path ./checkpoints/CKPT_3D_H36M --global_translation --data_dir ./datasets
   ```
 
 ### Visualization
  For visualizing from a pretrained model, we have used the following commands:
  ```bash
-  python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --mode viz --model_path ./checkpoints/CKPT_3D_H36M --n_viz 5 --data_dir ${to human3.6m}
+  python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --mode viz --model_path ./checkpoints/CKPT_3D_H36M --n_viz 5 --data_dir ./datasets
  ```
 With global translation, we have the following commands:
  ```bash
-  python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --mode viz --model_path ./checkpoints/CKPT_3D_H36M --n_viz 5 --global_translation --data_dir ${to human3.6m}
+  python main_h36_3d.py --input_n ${number of historical sequence frames} --output_n ${maximum number of predicted frames} --skip_rate ${sampling rate} --n_pre ${number of dct coefficients} --mode viz --model_path ./checkpoints/CKPT_3D_H36M --n_viz 5 --global_translation --data_dir ./datasets
  ```
  
  ### Acknowledgments
