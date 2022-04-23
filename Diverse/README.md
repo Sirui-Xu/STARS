@@ -5,8 +5,6 @@
 * [PyTorch](https://pytorch.org) >= 1.8
 * Tensorboard
 
-tested on pytorch == 1.8.1
-
 ### Get the data
 We adapt the data preprocessing from [GSPS](https://github.com/wei-mao-2019/gsps).
 * We follow the data preprocessing steps ([DATASETS.md](https://github.com/facebookresearch/VideoPose3D/blob/master/DATASETS.md)) inside the [VideoPose3D](https://github.com/facebookresearch/VideoPose3D) repo.
@@ -15,9 +13,8 @@ We adapt the data preprocessing from [GSPS](https://github.com/wei-mao-2019/gsps
 ### Training
 We have used the following commands for training the network on Human3.6M or HumanEva-I with skeleton representation:
 ```bash
- python main.py --cfg ${h36m/humaneva} 
- ```
-
+python main.py --cfg ${h36m/humaneva} 
+```
  ### Test
  To test on the pretrained model, we have used the following commands:
   ```bash
