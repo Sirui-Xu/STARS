@@ -410,7 +410,7 @@ if __name__ == '__main__':
     logger.info(">>> total params: {:.2f}M".format(
         sum(p.numel() for p in list(model.parameters())) / 1000000.0))
 
-    cp_path = 'results/h36m_nf/models/vae_0025_ori.p' if cfg.dataset == 'h36m' else 'results/humaneva_nf/models/vae_0025.p'
+    cp_path = 'results/h36m_nf/models/vae_0025.p' if cfg.dataset == 'h36m' else 'results/humaneva_nf/models/vae_0025.p'
     print('loading model from checkpoint: %s' % cp_path)
     model_cp = pickle.load(open(cp_path, "rb"))
     pose_prior.load_state_dict(model_cp['model_dict'])
