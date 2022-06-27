@@ -13,6 +13,7 @@ We adapt the data preprocessing from [GSPS](https://github.com/wei-mao-2019/gsps
 ### Training
 We have used the following commands for training the network on Human3.6M or HumanEva-I with skeleton representation:
 ```bash
+python train_nf.py --cfg ${h36m_nf/humaneva_nf}
 python main.py --cfg ${h36m/humaneva} 
 ```
  ### Test
