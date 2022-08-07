@@ -27,4 +27,4 @@ If you find this work useful in your research, please cite:
 
 ## License
 
-This code is distributed under an [MIT LICENSE](LICENSE)
+This repo is distributed under an [MIT LICENSE](LICENSE)
