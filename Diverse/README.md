@@ -1,5 +1,6 @@
 # Diverse Human Motion Forecasting
-
+![Loading Architecture Overview](../images/diverse.png "Architecture")
+---
 ### Dependencies
 * Python >= 3.8
 * [PyTorch](https://pytorch.org) >= 1.8
