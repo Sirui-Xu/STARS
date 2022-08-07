@@ -19,7 +19,7 @@ If you find this work useful in your research, please cite:
 ```bibtex
 @inproceedings{xu22stars,
   title     = {Diverse Human Motion Prediction Guided by Multi-Level Spatial-Temporal Anchors},
-  author    = {Sirui Xu, Yu-Xiong Wang, Liang-Yan Gui},
+  author    = {Xu, Sirui and Wang, Yu-Xiong and Gui, Liang-Yan},
   booktitle = {European Conference on Computer Vision (ECCV)},
   year      = {2022}
 }
