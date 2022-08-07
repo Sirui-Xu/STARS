@@ -336,7 +336,7 @@ def visualize():
 
     pose_gen = pose_generator()
     for i in tqdm(range(args.n_viz)):
-        render_animation(dataset.skeleton, pose_gen, cfg.t_his, ncol=12, output='./out/{}/'.format(args.cfg), index_i=i)
+        render_animation(dataset.skeleton, pose_gen, cfg.t_his, ncol=12, output='./results/{}/results/'.format(args.cfg), index_i=i)
 
 
 if __name__ == '__main__':
