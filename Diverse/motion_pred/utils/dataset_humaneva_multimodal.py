@@ -53,9 +53,12 @@ class DatasetHumanEva(Dataset):
         self.data_candi = {}
 
         for key in list(data_f.keys()):
+            # data_f[key] = dict(filter(lambda x: (self.actions == 'all' or
+            #                                      all([a in x[0] for a in self.actions]))
+            #                                     and x[1].shape[0] >= self.t_total, data_f[key].items()))
             data_f[key] = dict(filter(lambda x: (self.actions == 'all' or
-                                                 all([a in x[0] for a in self.actions]))
-                                                and x[1].shape[0] >= self.t_total, data_f[key].items()))
+                                                 any([a in x[0] for a in self.actions]))
+                                                 and x[1].shape[0] >= self.t_total, data_f[key].items()))
             if len(data_f[key]) == 0:
                 data_f.pop(key)
         for sub in data_f.keys():

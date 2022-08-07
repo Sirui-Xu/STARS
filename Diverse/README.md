@@ -29,4 +29,4 @@ python main.py --cfg ${h36m/humaneva}
   ```
  ### Acknowledgments
  
- The overall code framework was adapted from [GSPS](https://github.com/wei-mao-2019/gsps).
+ This code is based on the implementations of [GSPS](https://github.com/wei-mao-2019/gsps).

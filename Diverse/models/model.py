@@ -368,16 +368,25 @@ class Model(nn.Module):
         for gcn in (self.st_gcnns[:-5]):
             x = gcn(x)
 
-        result = [0 for _ in range(self.nk1 * self.nk2)]
-        for i in range(self.nk1):
-            # CT -> NCTV
-            t = self.T1[i]
-            for j in range(self.nk2):
-                # CV -> NCTV
-                a = self.A1[j]
-                result[i * self.nk2 + j] = x + t + a
+        # result = [0 for _ in range(self.nk1 * self.nk2)]
+        # for i in range(self.nk1):
+        #     # CT -> NCTV
+        #     t = self.T1[i]
+        #     for j in range(self.nk2):
+        #         # CV -> NCTV
+        #         a = self.A1[j]
+        #         result[i * self.nk2 + j] = x + t + a
+        # result = torch.cat(result, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
         
-        result = torch.cat(result, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
+        # try to speed up forward by using tensor operation
+        result = torch.zeros(self.nk1 * self.nk2, N, x.shape[1], T, V, device=x.device)
+        i, j = torch.meshgrid(torch.arange(self.nk1), torch.arange(self.nk2))
+        i, j = i.to(x.device), j.to(x.device)
+        idx = torch.arange(self.nk1 * self.nk2, device=x.device).view(self.nk1, self.nk2)
+        result[idx] = x + self.T1[i] + self.A1[j]
+        result = result.reshape([self.nk1 * self.nk2 * N, -1, T, V])
+
+        
         for gcn in (self.st_gcnns[-5:-4]):
             result = gcn(result)
 
@@ -388,15 +397,22 @@ class Model(nn.Module):
             result = gcn(result)
 
         result = result.reshape([self.nk1 * self.nk2, N, -1, T, V])
-        result2 = [0 for _ in range(self.nk1 * self.nk2)]
-        for i in range(self.nk2):
-            # CT -> NCTV
-            t = self.T2[i]
-            for j in range(self.nk1):
-                # CV -> NCTV
-                a = self.A2[j]
-                result2[i * self.nk1 + j] = result[j * self.nk2 + i] + t + a
-        result = torch.cat(result2, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
+        # result2 = [0 for _ in range(self.nk1 * self.nk2)]
+        # for i in range(self.nk2):
+        #     # CT -> NCTV
+        #     t = self.T2[i]
+        #     for j in range(self.nk1):
+        #         # CV -> NCTV
+        #         a = self.A2[j]
+        #         result2[i * self.nk1 + j] = result[j * self.nk2 + i] + t + a
+        # result = torch.cat(result2, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
+
+        result2 = torch.zeros_like(result, device=x.device)
+        i, j = torch.meshgrid(torch.arange(self.nk1), torch.arange(self.nk2))
+        i, j = i.to(x.device), j.to(x.device)
+        idx = torch.arange(self.nk1 * self.nk2, device=x.device).view(self.nk1, self.nk2)
+        result2[idx] = result[idx] + self.T2[i] + self.A2[j]
+        result = result2.reshape([self.nk1 * self.nk2 * N, -1, T, V])
         
         for gcn in (self.st_gcnns[-3:]):
             result = gcn(result)

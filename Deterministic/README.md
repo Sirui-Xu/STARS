@@ -53,4 +53,4 @@ With global translation, we have the following commands:
  
  ### Acknowledgments
  
- The overall code framework was adapted from [STSGCN](https://github.com/FraLuca/STSGCN).
+ This code is based on the implementations of [STSGCN](https://github.com/FraLuca/STSGCN).

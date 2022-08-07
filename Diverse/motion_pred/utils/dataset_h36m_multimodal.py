@@ -44,8 +44,9 @@ class DatasetH36M(Dataset):
         data_f = dict(filter(lambda x: x[0] in self.subjects, data_o.items()))
         if self.actions != 'all':
             for key in list(data_f.keys()):
-                data_f[key] = dict(
-                    filter(lambda x: all([a in str.lower(x[0]) for a in self.actions]), data_f[key].items()))
+                # data_f[key] = dict(
+                #     filter(lambda x: all([a in str.lower(x[0]) for a in self.actions]), data_f[key].items()))
+                data_f[key] = dict(filter(lambda x: any([a in str.lower(x[0]) for a in self.actions]), data_f[key].items()))
                 if len(data_f[key]) == 0:
                     data_f.pop(key)
         # possible candidate
