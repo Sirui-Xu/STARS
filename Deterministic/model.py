@@ -98,6 +98,7 @@ class ConvTemporalGraphicalEnhanced(nn.Module):
                                           16, 17, 18, 19, 20, 19, 22, 12, 24, 25, 26, 27, 28, 27, 30],
                  joints_left=[6, 7, 8, 9, 10, 16, 17, 18, 19, 20, 21, 22, 23],
                  joints_right=[1, 2, 3, 4, 5, 24, 25, 26, 27, 28, 29, 30, 31],
+                 version='long'
     ):
         super(ConvTemporalGraphicalEnhanced,self).__init__()
         
@@ -129,18 +130,22 @@ class ConvTemporalGraphicalEnhanced(nn.Module):
                 if right_dim in dim_used:
                     self.A_s[0][i][right_index] = 1
                     self.A_s[0][right_index][i] = 1
-
         self.T_s = torch.zeros((1,time_dim,time_dim), requires_grad=False)
-        for i in range(time_dim):
-            if i > 0:
-                self.T_s[0][i-1][i] = 1
-                self.T_s[0][i][i-1] = 1
+        if version == 'long':
+            for i in range(time_dim):
+                if i > 0:
+                    self.T_s[0][i-1][i] = 1
+                    self.T_s[0][i][i-1] = 1
 
-            if i < time_dim - 1:
-                self.T_s[0][i+1][i] = 1
-                self.T_s[0][i][i+1] = 1
-            
-            self.T_s[0][i][i] = 1
+                if i < time_dim - 1:
+                    self.T_s[0][i+1][i] = 1
+                    self.T_s[0][i][i+1] = 1
+                
+                self.T_s[0][i][i] = 1
+        elif version == 'short':
+            self.T_s = self.T_s + 1
+        else:
+            raise Exception("model type should be long or short")
 
         self.joints_dim = joints_dim
         self.time_dim = time_dim
@@ -178,7 +183,7 @@ class ST_GCNN_layer(nn.Module):
                  joints_dim,
                  dropout,
                  bias=True,
-                 version=0,
+                 version='full',
                  dim_used=None):
         
         super(ST_GCNN_layer,self).__init__()
@@ -187,10 +192,10 @@ class ST_GCNN_layer(nn.Module):
         assert self.kernel_size[1] % 2 == 1
         padding = ((self.kernel_size[0] - 1) // 2,(self.kernel_size[1] - 1) // 2)
         
-        if version == 0:
+        if version == 'full':
             self.gcn=ConvTemporalGraphical(time_dim,joints_dim) # the convolution layer
-        elif version == 1:
-            self.gcn=ConvTemporalGraphicalEnhanced(time_dim,joints_dim,dim_used=dim_used)
+        else:
+            self.gcn=ConvTemporalGraphicalEnhanced(time_dim,joints_dim,dim_used=dim_used,version=version)
 
         self.tcn = nn.Sequential(
             nn.Conv2d(
@@ -202,12 +207,7 @@ class ST_GCNN_layer(nn.Module):
             ),
             nn.BatchNorm2d(out_channels),
             nn.Dropout(dropout, inplace=True),
-        )
-
-
-            
-        
-                
+        )       
         
         if stride != 1 or in_channels != out_channels: 
 
@@ -258,7 +258,8 @@ class Model(nn.Module):
                  st_gcnn_dropout,
                  dim_used,
                  n_pre=20,
-                 bias=True):
+                 bias=True,
+                 version='long'):
         
         super(Model,self).__init__()
         self.input_time_frame=input_time_frame
@@ -268,51 +269,38 @@ class Model(nn.Module):
         self.joints_to_consider=joints_to_consider
         self.st_gcnns=nn.ModuleList()
         self.st_gcnns.append(ST_GCNN_layer(input_channels,128,[3,1],1,n_pre,
-                                           joints_to_consider,st_gcnn_dropout,version=0,dim_used=dim_used))
+                                           joints_to_consider,st_gcnn_dropout,version='full',dim_used=dim_used))
 
         self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
+                                               joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))
             
         self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
+                                               joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))
                                        
         self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))   
+                                               joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))   
         
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
         # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
         self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
+                                               joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
         # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
         self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))   
+                                               joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))   
         
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
         # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
         self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
+                                               joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))
         
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
-
-        # self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
-        #                                        joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))   
-        
-        # self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
-
-        # self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
-        #                                        joints_to_consider,st_gcnn_dropout,version=1,dim_used=dim_used))
-        
-        # self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
         self.st_gcnns.append(ST_GCNN_layer(128,input_channels,[3,1],1,n_pre,
-                                               joints_to_consider,st_gcnn_dropout,version=0,dim_used=dim_used))  
+                                               joints_to_consider,st_gcnn_dropout,version='full',dim_used=dim_used))  
         self.st_gcnns[-1].gcn.A = self.st_gcnns[0].gcn.A    
 
         self.dct_m, self.idct_m = self.get_dct_matrix(self.input_time_frame + self.output_time_frame)

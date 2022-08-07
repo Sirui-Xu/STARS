@@ -32,7 +32,7 @@ parser.add_argument('--milestones',type=list,default=[15,25,35,40],help= 'the ep
 parser.add_argument('--gamma',type=float,default=0.1,help= 'gamma correction to the learning rate, after reaching the milestone epochs')
 parser.add_argument('--clip_grad',type=float,default=None,help= 'select max norm to clip gradients')
 parser.add_argument('--model_path',type=str,default='./checkpoints/CKPT_3D_H36M',help= 'directory with the models checkpoints ')
-
+parser.add_argument('--version',type=str,default='long',help= 'model version (long or short)')
 
 #FLAGS FOR THE VISUALIZATION
 
