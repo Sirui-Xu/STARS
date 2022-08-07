@@ -449,7 +449,7 @@ if __name__ == '__main__':
         with torch.no_grad():
             test(model, args.iter)
 
-    elif args.mode == 'viz':
+    elif mode == 'viz':
         model.to(device)
         model.eval()
         with torch.no_grad():

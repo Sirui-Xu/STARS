@@ -320,6 +320,10 @@ class Model(nn.Module):
         self.nk2 = nk2
         self.dct_m, self.idct_m = self.get_dct_matrix(self.input_time_frame + self.output_time_frame)
         self.n_pre = n_pre
+        self.i1, self.j1 = torch.meshgrid(torch.arange(self.nk1), torch.arange(self.nk2))
+        self.idx1 = torch.arange(self.nk1 * self.nk2).view(self.nk1, self.nk2)
+        self.i2, self.j2 = torch.meshgrid(torch.arange(self.nk2), torch.arange(self.nk1))
+        self.idx2 = torch.tensor([[jj * self.nk2 + ii for jj in range(self.nk1)] for ii in range(self.nk2)], dtype=torch.long).view(self.nk2, self.nk1)
 
     def get_dct_matrix(self, N, is_torch=True):
         dct_m = np.eye(N, dtype=np.float32)
@@ -379,11 +383,7 @@ class Model(nn.Module):
         # result = torch.cat(result, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
         
         # try to speed up forward by using tensor operation
-        result = torch.zeros(self.nk1 * self.nk2, N, x.shape[1], T, V, device=x.device)
-        i, j = torch.meshgrid(torch.arange(self.nk1), torch.arange(self.nk2))
-        i, j = i.to(x.device), j.to(x.device)
-        idx = torch.arange(self.nk1 * self.nk2, device=x.device).view(self.nk1, self.nk2)
-        result[idx] = x + self.T1[i] + self.A1[j]
+        result = x + self.T1[self.i1] + self.A1[self.j1]
         result = result.reshape([self.nk1 * self.nk2 * N, -1, T, V])
 
         
@@ -407,12 +407,8 @@ class Model(nn.Module):
         #         result2[i * self.nk1 + j] = result[j * self.nk2 + i] + t + a
         # result = torch.cat(result2, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
 
-        result2 = torch.zeros_like(result, device=x.device)
-        i, j = torch.meshgrid(torch.arange(self.nk1), torch.arange(self.nk2))
-        i, j = i.to(x.device), j.to(x.device)
-        idx = torch.arange(self.nk1 * self.nk2, device=x.device).view(self.nk1, self.nk2)
-        result2[idx] = result[idx] + self.T2[i] + self.A2[j]
-        result = result2.reshape([self.nk1 * self.nk2 * N, -1, T, V])
+        result = result[self.idx2] + self.T2[self.i2] + self.A2[self.j2]
+        result = result.reshape([self.nk1 * self.nk2 * N, -1, T, V])
         
         for gcn in (self.st_gcnns[-3:]):
             result = gcn(result)
