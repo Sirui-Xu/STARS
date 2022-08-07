@@ -1,5 +1,5 @@
 # STARS: Diverse Human Motion Prediction Guided by Multi-Level Spatial-Temporal Anchors
-![Loading STARS Overview](images/teaser.pdf "STARS")
+![Loading STARS Overview](images/teaser.png "STARS")
 ---
 This repo contains the official implementation of the paper:
 
