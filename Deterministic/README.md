@@ -3,8 +3,12 @@
 ---
 ### Dependencies
 * Python >= 3.8
-* [PyTorch](https://pytorch.org) >= 1.8
+* [PyTorch](https://pytorch.org) >= 1.9
 * Tensorboard
+* matplotlib
+* tqdm
+* argparse
+
  ### Get the data
 
 [Human3.6m](http://vision.imar.ro/human3.6m/description.php) in exponential map can be downloaded from [here](http://www.cs.stanford.edu/people/ashesh/h3.6m.zip).

@@ -101,48 +101,14 @@ class ConvTemporalGraphicalV1(nn.Module):
                 if right_dim in dim_use:
                     self.A_s[0][i][right_index] = 1
                     self.A_s[0][right_index][i] = 1
-        # self.A_s = torch.zeros((1,joints_dim,joints_dim), requires_grad=False, dtype=torch.float)
-        # root_nodes = []
-        # for i, dim in enumerate(dim_use):
-        #     self.A_s[0][i][i] = 1
-        #     parent_index = parents[i]
-        #     if parent_index == -1:
-        #         for k in root_nodes:
-        #             self.A_s[0][i][k] = 1
-        #             self.A_s[0][k][i] = 1
-        #         root_nodes.append(i)
-        #     elif parent_index >= 0:
-        #         self.A_s[0][i][parent_index] = 1
-        #         self.A_s[0][parent_index][i] = 1
-        #     if i in joints_left:
-        #         index = joints_left.index(i)
-        #         right_dim = joints_right[index]
-
-        #         self.A_s[0][i][right_dim] = 1
-        #         self.A_s[0][right_dim][i] = 1
-
-        # self.T_s = torch.zeros((1,time_dim,time_dim), requires_grad=False, dtype=torch.float)
-        # for i in range(time_dim):
-        #     if i > 0:
-        #         self.T_s[0][i-1][i] = 1
-        #         self.T_s[0][i][i-1] = 1
-
-        #     if i < time_dim - 1:
-        #         self.T_s[0][i+1][i] = 1
-        #         self.T_s[0][i][i+1] = 1
-            
-        #     self.T_s[0][i][i] = 1
 
         self.joints_dim = joints_dim
         self.time_dim = time_dim
 
     def forward(self, x):
-        # T = self.T * self.T_s.to(x.device)
         A = self.A * self.A_s.to(x.device)
         x = torch.einsum('nctv,vtq->ncqv', (x, self.T))
-        ## x=self.prelu(x)
         x = torch.einsum('nctv,tvw->nctw', (x, A))
-        ## x = torch.einsum('nctv,wvtq->ncqw', (x, self.Z))
         return x.contiguous() 
 
 
@@ -265,27 +231,10 @@ class Model(nn.Module):
             
         self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout, version=1, pose_info=pose_info))
-        
-            # st_gcnns = nn.ModuleList()               
+                  
         self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout, pose_info=pose_info))   
         
-        self.T1=nn.Parameter(torch.FloatTensor(nk1, 1, 128, n_pre, 1)) 
-        stdv = 1. / math.sqrt(self.T1.size(1))
-        self.T1.data.uniform_(-stdv,stdv)
-
-        self.A1=nn.Parameter(torch.FloatTensor(nk2, 1, 128, 1, joints_to_consider)) 
-        stdv = 1. / math.sqrt(self.A1.size(1))
-        self.A1.data.uniform_(-stdv,stdv)
-
-        self.T2=nn.Parameter(torch.FloatTensor(nk2, 1, 128, n_pre, 1)) 
-        stdv = 1. / math.sqrt(self.T2.size(1))
-        self.T2.data.uniform_(-stdv,stdv)
-
-        self.A2=nn.Parameter(torch.FloatTensor(nk1, 1, 128, 1, joints_to_consider)) 
-        stdv = 1. / math.sqrt(self.A2.size(1))
-        self.A2.data.uniform_(-stdv,stdv)
-
         self.st_gcnns.append(ST_GCNN_layer(128,128,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout, version=1, pose_info=pose_info))   
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
@@ -308,13 +257,22 @@ class Model(nn.Module):
         self.e_logvar_1 = ST_GCNN_layer(64,32,[3,1],1,n_pre,
                                         joints_to_consider,st_gcnn_dropout, pose_info=pose_info)
         self.e_logvar_2 = nn.Linear(32, 64)
-        # self.st_gcnns.append(ST_GCNN_layer(128,input_channels,[3,1],1,n_pre,
-        #                                        joints_to_consider,st_gcnn_dropout, keep_joints=keep_joints))
-                # at this point, we must permute the dimensions of the gcn network, from (N,C,T,V) into (N,T,C,V)           
-        # self.txcnns.append(CNN_layer(input_time_frame,output_time_frame,[3, 1],txc_dropout, groups=5)) # with kernel_size[3,3] the dimensinons of C,V will be maintained       
-        # self.mlp_1 = nn.Linear(input_time_frame, 128)
-        # self.relu = nn.PReLU()
-        # self.mlp_2 = nn.Linear(128, output_time_frame)
+
+        self.T1=nn.Parameter(torch.FloatTensor(nk1, 1, 128, n_pre, 1)) 
+        stdv = 1. / math.sqrt(self.T1.size(1))
+        self.T1.data.uniform_(-stdv,stdv)
+
+        self.A1=nn.Parameter(torch.FloatTensor(nk2, 1, 128, 1, joints_to_consider)) 
+        stdv = 1. / math.sqrt(self.A1.size(1))
+        self.A1.data.uniform_(-stdv,stdv)
+
+        self.T2=nn.Parameter(torch.FloatTensor(nk2, 1, 128, n_pre, 1)) 
+        stdv = 1. / math.sqrt(self.T2.size(1))
+        self.T2.data.uniform_(-stdv,stdv)
+
+        self.A2=nn.Parameter(torch.FloatTensor(nk1, 1, 128, 1, joints_to_consider)) 
+        stdv = 1. / math.sqrt(self.A2.size(1))
+        self.A2.data.uniform_(-stdv,stdv)
 
         self.nk1 = nk1
         self.nk2 = nk2
@@ -343,9 +301,6 @@ class Model(nn.Module):
         N, C, T, V = x.shape
         x_mu = self.e_mu_1(x).mean(2).mean(2)
         x_logvar = self.e_logvar_1(x).mean(2).mean(2)
-
-        # x = x.permute(0, 2, 3, 1)
-        # NTVC
         mu = self.e_mu_2(x_mu).unsqueeze(2).unsqueeze(3).repeat((1, 1, T, V))
         logvar = self.e_logvar_2(x_logvar).unsqueeze(2).unsqueeze(3).repeat((1, 1, T, V))
         std = torch.exp(0.5*logvar)
@@ -353,12 +308,11 @@ class Model(nn.Module):
         return mu + eps * std, mu, logvar
 
     def forward(self, x, y0):
-        # TNVC -> NCTV
         x = x.view(x.shape[0], x.shape[1], -1, 3)
         x = x.permute(1, 3, 0, 2)
         idx_pad = list(range(self.input_time_frame)) + [self.input_time_frame - 1] * self.output_time_frame
         y = torch.zeros((x.shape[0], x.shape[1], self.output_time_frame, x.shape[3])).to(x.device)
-        inp = torch.cat([x, y], dim=2).permute(0, 2, 1, 3) #NCTV -> NTCV
+        inp = torch.cat([x, y], dim=2).permute(0, 2, 1, 3)
         N, T, C, V = inp.shape
         dct_m = self.dct_m.to(x.device)
         idct_m = self.idct_m.to(x.device)
@@ -382,7 +336,7 @@ class Model(nn.Module):
         #         result[i * self.nk2 + j] = x + t + a
         # result = torch.cat(result, dim=0).reshape([self.nk1 * self.nk2 * N, -1, T, V]) # MN C T V
         
-        # try to speed up forward by using tensor operation
+        # speed up by using tensor operation
         result = x + self.T1[self.i1] + self.A1[self.j1]
         result = result.reshape([self.nk1 * self.nk2 * N, -1, T, V])
 
@@ -415,10 +369,8 @@ class Model(nn.Module):
 
         N, C, T, V = res.shape
         result += res.repeat(self.nk1 * self.nk2, 1, 1, 1)
-        # print(result.shape, self.nk1 * self.nk2 * N, C * V)
         x = result.permute(0, 2, 1, 3).reshape([self.nk1 * self.nk2 * N, -1, C * V])
         x_re = torch.matmul(idct_m[:, :self.n_pre], x).reshape([self.nk1 * self.nk2, N, -1, C, V])
         
-        # MNTCV -> TNMVC
         x = x_re.permute(2, 1, 0, 4, 3).contiguous().view(-1, y0.shape[1], self.nk1 * self.nk2, y0.shape[2], 1).squeeze(4)
         return x, mu, logvar

@@ -40,11 +40,13 @@ def recon_loss(Y_g, Y, Y_mm, Y_hg, Y_h):
     mask = Y_mm.abs().sum(-1).sum(0) > 1e-6
     dist = diff.pow(2)
     with torch.no_grad():
-        zeros = torch.zeros_like(dist, requires_grad=False).to(dist.device)
-        const = dist.max() - dist.min()
-        for i in range(indices.shape[0]):
-            zeros[:, i, indices[i], :, :] = const + 1
-            # Y_g[:, i, indices[i], :] = Y[:, i, :]
+        # zeros = torch.zeros_like(dist, requires_grad=False).to(dist.device)
+        # const = dist.max() - dist.min()
+        # for i in range(indices.shape[0]):
+        #     zeros[:, i, indices[i], :, :] = const + 1
+        zeros = torch.zeros([dist.shape[1], dist.shape[2]], requires_grad=False).to(dist.device)
+        zeros.scatter_(dim=1, index=indices.unsqueeze(1).repeat(1, dist.shape[2]), src=zeros+dist.max()-dist.min()+1)
+        zeros = zeros.unsqueeze(0).unsqueeze(3).unsqueeze(4)
         dist += zeros
     dist = dist.sum(dim=-1).sum(dim=0)
     value_2, indices_2 = dist.min(dim=1)
@@ -113,6 +115,7 @@ def loss_function(traj_est, traj, traj_multimodal, prior_lkh, prior_logdetjac, _
     loss_r = loss_limb * lambdas[1] + JL * lambdas[3] * _lambda + RECON * lambdas[4] + RECON_mm * lambdas[5] \
              - prior_lkh.mean() * lambdas[6] + RECON_2 * lambdas[7]# - prior_logdetjac.mean() * lambdas[7]
     
+    # KL divergence is not used.
     KLD = lambdas[0] * -0.5 * torch.sum(1 + logvar - mu.pow(2) - logvar.exp()) / Y.shape[1]
 
     if loss_ang > 0:

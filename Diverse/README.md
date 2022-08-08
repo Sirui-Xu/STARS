@@ -3,8 +3,11 @@
 ---
 ### Dependencies
 * Python >= 3.8
-* [PyTorch](https://pytorch.org) >= 1.8
+* [PyTorch](https://pytorch.org) >= 1.9
 * Tensorboard
+* matplotlib
+* tqdm
+* argparse
 
 ### Get the data
 We adapt the data preprocessing from [GSPS](https://github.com/wei-mao-2019/gsps).

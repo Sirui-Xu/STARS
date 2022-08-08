@@ -161,7 +161,7 @@ def render_animation(skeleton, poses_generator, t_hist, fix_0=True, azim=0.0, ou
         anim = FuncAnimation(fig, update_video, frames=np.arange(0, poses[0].shape[0]), interval=1000 / fps, repeat=False)
         os.makedirs(output+'video', exist_ok=True)
         anim.save(output + 'video/%d_%s.gif' % (index_i, action), dpi=80, writer='imagemagick')
-        print(f'video saved to {output}video/%d_%s.gif!')
+        print(f'video saved to {output}video/{index_i}_{action}.gif!')
     save()
     # fig.canvas.mpl_connect('key_press_event', on_key)
     # show_animation()

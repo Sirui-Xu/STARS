@@ -1,4 +1,4 @@
-# Diverse Human Motion Prediction Guided by Multi-Level Spatial-Temporal Anchors
+# Diverse Human Motion Prediction Guided by Multi-Level *S*patial-*T*emporal *A*ncho*RS*
 ![Loading STARS Overview](images/teaser.png "STARS")
 ---
 This repo contains the official implementation of the paper:
