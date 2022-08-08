@@ -31,7 +31,7 @@ def train(epoch):
     train_grad = 0
     total_num_sample = 0
     loss_names = ['LKH', 'log_p(z)', 'log_det']
-    generator = dataset.sampling_generator(num_samples=cfg.num_vae_data_sample, batch_size=cfg.batch_size)
+    generator = dataset.sampling_generator(num_samples=cfg.num_data_sample, batch_size=cfg.batch_size)
     prior = torch.distributions.Normal(torch.tensor(0, dtype=dtype, device=device),
                                        torch.tensor(1, dtype=dtype, device=device))
     for traj_np in generator:
@@ -66,7 +66,7 @@ def train(epoch):
     # average cost of log time 20s
     tb_logger.add_scalar('train_grad', train_grad / total_num_sample, epoch)
     for name, loss in zip(loss_names, train_losses):
-        tb_logger.add_scalars('vae_' + name, {'train': loss}, epoch)
+        tb_logger.add_scalars(name, {'train': loss}, epoch)
 
     logger.info('====> Epoch: {} Time: {:.2f} {} lr: {:.5f}'.format(epoch, time.time() - t_s, losses_str, lr))
 
@@ -77,7 +77,7 @@ def val(epoch):
     train_losses = 0
     total_num_sample = 0
     loss_names = ['LKH', 'log_p(z)', 'log_det']
-    generator = dataset.sampling_generator(num_samples=cfg.num_vae_data_sample // 2, batch_size=cfg.batch_size)
+    generator = dataset.sampling_generator(num_samples=cfg.num_data_sample // 2, batch_size=cfg.batch_size)
     prior = torch.distributions.Normal(torch.tensor(0, dtype=dtype, device=device),
                                        torch.tensor(1, dtype=dtype, device=device))
     loginfos = None
@@ -110,11 +110,11 @@ def val(epoch):
 
     # average cost of log time 20s
     for name, loss in zip(loss_names, train_losses):
-        tb_logger.add_scalars('vae_' + name, {'val': loss}, epoch)
+        tb_logger.add_scalars(name, {'val': loss}, epoch)
     logger.info('====> Epoch: {} Val Time: {:.2f} {} lr: {:.5f}'.format(epoch, time.time() - t_s, losses_str, lr))
 
     t_s = time.time()
-    generator = dataset_test.sampling_generator(num_samples=cfg.num_vae_data_sample // 2, batch_size=cfg.batch_size)
+    generator = dataset_test.sampling_generator(num_samples=cfg.num_data_sample // 2, batch_size=cfg.batch_size)
     loginfos_test = None
     with torch.no_grad():
         xx = []
@@ -145,7 +145,7 @@ def val(epoch):
 
     # average cost of log time 20s
     for name, loss in zip(loss_names, train_losses):
-        tb_logger.add_scalars('vae_' + name, {'test': loss}, epoch)
+        tb_logger.add_scalars(name, {'test': loss}, epoch)
     logger.info('====> Epoch: {} Test Time: {:.2f} {} lr: {:.5f}'.format(epoch, time.time() - t_s, losses_str, lr))
 
     t_s = time.time()
@@ -228,7 +228,7 @@ if __name__ == '__main__':
     device = torch.device('cuda')#, index=args.gpu_index) if torch.cuda.is_available() else torch.device('cpu')
     # if torch.cuda.is_available():
     #     torch.cuda.set_device(args.gpu_index)
-    cfg = Config(f'{args.cfg}', test=args.test)
+    cfg = Config(f'{args.cfg}', test=args.test, nf=True)
     tb_logger = SummaryWriter(cfg.tb_dir) if args.mode == 'train' else None
     logger = create_logger(os.path.join(cfg.log_dir, 'log.txt'))
 
@@ -250,15 +250,15 @@ if __name__ == '__main__':
         dataset_test.normalize_data(dataset.mean, dataset.std)
 
     """model"""
-    model = get_model(cfg, dataset.traj_dim, args.cfg)
+    model = get_model(cfg, dataset, args.cfg+'_nf')
     print(model)
     model.float()
-    optimizer = optim.Adam(model.parameters(), lr=cfg.vae_lr, weight_decay=1e-3)
-    scheduler = get_scheduler(optimizer, policy='lambda', nepoch_fix=cfg.num_vae_epoch_fix, nepoch=cfg.num_vae_epoch)
+    optimizer = optim.Adam(model.parameters(), lr=cfg.lr, weight_decay=1e-3)
+    scheduler = get_scheduler(optimizer, policy='lambda', nepoch_fix=cfg.num_epoch_fix, nepoch=cfg.num_epoch)
     logger.info(">>> total params: {:.5f}M".format(sum(p.numel() for p in list(model.parameters())) / 1000000.0))
 
     if args.iter > 0:
-        cp_path = cfg.vae_model_path % args.iter
+        cp_path = cfg.model_path % args.iter
         print('loading model from checkpoint: %s' % cp_path)
         model_cp = pickle.load(open(cp_path, "rb"))
         model.load_state_dict(model_cp['model_dict'])
@@ -266,7 +266,7 @@ if __name__ == '__main__':
     if mode == 'train':
         model.to(device)
         overall_iter = 0
-        for i in range(args.iter, cfg.num_vae_epoch):
+        for i in range(args.iter, cfg.num_epoch):
             model.train()
             train(i)
             model.eval()
@@ -274,6 +274,6 @@ if __name__ == '__main__':
             # test(i)
             if cfg.save_model_interval > 0 and (i + 1) % cfg.save_model_interval == 0:
                 with to_cpu(model):
-                    cp_path = cfg.vae_model_path % (i + 1)
+                    cp_path = cfg.model_path % (i + 1)
                     model_cp = {'model_dict': model.state_dict(), 'meta': {'std': dataset.std, 'mean': dataset.mean}}
                     pickle.dump(model_cp, open(cp_path, 'wb'))

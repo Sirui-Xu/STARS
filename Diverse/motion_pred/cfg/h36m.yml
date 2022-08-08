@@ -1,55 +1,21 @@
+dataset: h36m
 nz: 128
 t_his: 25
 t_pred: 100
-lambda_v: 1000
-beta: 0.1
-vae_specs:
-  rnn_type: gru
-  x_birnn: false
-  e_birnn: false
-  use_drnn_mlp: true
-
+dropout: 0.1
 nk: 50
 nk1: 5
 nk2: 10
-dlow_batch_size: 64
-d_scale: 100
-lambda_j: 25
-lambda_recon: 2.0
-dlow_lr: 1.e-4
-dlow_specs:
-  model_name: NFDiag
-  rnn_type: gru
-  nh_mlp: [ 1024, 512 ]
-  x_birnn: false
-num_dlow_epoch: 500
-num_dlow_epoch_fix: 100
-num_dlow_data_sample: 5000
-
-nf_specs:
-  model_name: GCN
-  hidden_dim: 256
+lambdas: [ 0, 500.0, 0, 160, 2.0, 1.0, 0.01, 50, 100]
+specs:
   num_flow_layer: 1
-  num_ds_layer: 2
-  lambdas: [ 0, 500.0, 0, 160, 2.0, 1.0, 0.01, 50, 100]
-  parts: [ [ 0, 1, 2, 3, 4, 5 ], [ 6, 7, 8, 9, 10, 11, 12, 13, 14, 15 ] ]
-  num_stage: 4
-  nz: 64
   n_pre: 20
   multimodal_path: ./data/data_multi_modal/t_his25_1_thre0.500_t_pred100_thre0.100_filtered_dlow.npz
   data_candi_path: ./data/data_multi_modal/data_candi_t_his25_t_pred100_skiprate20.npz
 
-vae_specs:
-  dropout: 0.1
-  num_layers: 4 
-  kernel_size: [3,3]
-  txc_dropout: 0
-
-vae_lr: 1.e-3
+lr: 1.e-3
 batch_size: 16
-num_vae_epoch: 500
-num_vae_epoch_fix: 100
-num_vae_data_sample: 5000
-con_hidden_dim: 128
-data_hidden_dim: 128
+num_epoch: 500
+num_epoch_fix: 100
+num_data_sample: 5000
 normalize_data: False

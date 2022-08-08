@@ -112,12 +112,7 @@ class LinNF(nn.Module):
 
 if __name__ == '__main__':
     bs = 32
-    node_n = 48
     data_dim = 25
-    hidden_dim = 128
-    con_dim = 100
-    num_flow_layer = 10
-    num_ds_layer = 6
 
     sf = LinNF(data_dim=data_dim)
     # a = sf.prior.sample([10000, 48, 25])

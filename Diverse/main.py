@@ -85,7 +85,7 @@ def angle_loss(y):
 
 
 def loss_function(traj_est, traj, traj_multimodal, prior_lkh, prior_logdetjac, _lambda, mu, logvar):
-    lambdas = cfg.nf_specs['lambdas']
+    lambdas = cfg.lambdas
     nj = dataset.traj_dim // 3
 
     Y_g = traj_est[t_his:] # T B M V
@@ -135,7 +135,7 @@ def train(epoch, stats):
     n_modality = 10
     loss_names = ['LOSS', 'loss_limb', 'loss_ang', 'loss_DIV',
                   'RECON', 'RECON_2', 'RECON_multi', "ADE", 'p(z)', 'logdet', 'KLD']
-    generator = dataset.sampling_generator(num_samples=cfg.num_vae_data_sample, batch_size=cfg.batch_size,
+    generator = dataset.sampling_generator(num_samples=cfg.num_data_sample, batch_size=cfg.batch_size,
                                            n_modality=n_modality)
     prior = torch.distributions.Normal(torch.tensor(0, dtype=dtype, device=device),
                                        torch.tensor(1, dtype=dtype, device=device))
@@ -180,7 +180,7 @@ def train(epoch, stats):
         prior_lkh = prior.log_prob(z).sum(dim=-1)
         # prior_logdetjac = log_det_jacobian.sum(dim=2)
 
-        loss, losses, stat = loss_function(traj_est, traj, traj_multimodal, prior_lkh, prior_logdetjac, epoch / cfg.num_vae_epoch, mu, logvar)
+        loss, losses, stat = loss_function(traj_est, traj, traj_multimodal, prior_lkh, prior_logdetjac, epoch / cfg.num_epoch, mu, logvar)
         stats += stat
         # if torch.isinf(loss):
         #     print(1)
@@ -277,7 +277,7 @@ def test(model, epoch):
     num_seeds = 1
     
     for i, (data, _) in tqdm(enumerate(data_gen)):
-        if args.mode == 'train' and (i >= 500 and (epoch + 1) % 50 != 0 and (epoch + 1) < cfg.num_vae_epoch - 100):
+        if args.mode == 'train' and (i >= 500 and (epoch + 1) % 50 != 0 and (epoch + 1) < cfg.num_epoch - 100):
             break
         num_samples += 1
         gt = data[..., 1:, :].reshape(data.shape[0], data.shape[1], -1)[:, t_his:, :]
@@ -377,43 +377,42 @@ if __name__ == '__main__':
     t_his = cfg.t_his
     t_pred = cfg.t_pred
     cfg.n_his = args.n_his
-    if 'n_pre' not in cfg.nf_specs.keys():
+    if 'n_pre' not in cfg.specs.keys():
         cfg.n_pre = args.n_pre
     else:
-        cfg.n_pre = cfg.nf_specs['n_pre']
+        cfg.n_pre = cfg.specs['n_pre']
     cfg.num_coupling_layer = args.num_coupling_layer
     # cfg.nz = args.nz
     """data"""
-    if 'actions' in cfg.nf_specs.keys():
-        act = cfg.nf_specs['actions']
+    if 'actions' in cfg.specs.keys():
+        act = cfg.specs['actions']
     else:
         act = 'all'
     dataset_cls = DatasetH36M if cfg.dataset == 'h36m' else DatasetHumanEva
     dataset = dataset_cls('train', t_his, t_pred, actions=act, use_vel=cfg.use_vel,
-                          multimodal_path=cfg.nf_specs[
-                              'multimodal_path'] if 'multimodal_path' in cfg.nf_specs.keys() else None,
-                          data_candi_path=cfg.nf_specs[
-                              'data_candi_path'] if 'data_candi_path' in cfg.nf_specs.keys() else None)
+                          multimodal_path=cfg.specs[
+                              'multimodal_path'] if 'multimodal_path' in cfg.specs.keys() else None,
+                          data_candi_path=cfg.specs[
+                              'data_candi_path'] if 'data_candi_path' in cfg.specs.keys() else None)
     dataset_test = dataset_cls('test', t_his, t_pred, actions=act, use_vel=cfg.use_vel,
-                               multimodal_path=cfg.nf_specs[
-                                   'multimodal_path'] if 'multimodal_path' in cfg.nf_specs.keys() else None,
-                               data_candi_path=cfg.nf_specs[
-                                   'data_candi_path'] if 'data_candi_path' in cfg.nf_specs.keys() else None)
+                               multimodal_path=cfg.specs[
+                                   'multimodal_path'] if 'multimodal_path' in cfg.specs.keys() else None,
+                               data_candi_path=cfg.specs[
+                                   'data_candi_path'] if 'data_candi_path' in cfg.specs.keys() else None)
     if cfg.normalize_data:
         dataset.normalize_data()
         dataset_test.normalize_data(dataset.mean, dataset.std)
     traj_gt_arr = get_multimodal_gt(dataset_test)
     """model"""
-    # model = get_vae_model(cfg, dataset.traj_dim)
     model, pose_prior = get_model(cfg, dataset, cfg.dataset)
     model.float()
     pose_prior.float()
-    optimizer = optim.Adam(model.parameters(), lr=cfg.vae_lr)
-    scheduler = get_scheduler(optimizer, policy='lambda', nepoch_fix=cfg.num_vae_epoch_fix, nepoch=cfg.num_vae_epoch)
+    optimizer = optim.Adam(model.parameters(), lr=cfg.lr)
+    scheduler = get_scheduler(optimizer, policy='lambda', nepoch_fix=cfg.num_epoch_fix, nepoch=cfg.num_epoch)
     logger.info(">>> total params: {:.2f}M".format(
         sum(p.numel() for p in list(model.parameters())) / 1000000.0))
 
-    cp_path = 'results/h36m_nf/models/vae_0025.p' if cfg.dataset == 'h36m' else 'results/humaneva_nf/models/vae_0025.p'
+    cp_path = 'results/h36m_nf/models/0025.p' if cfg.dataset == 'h36m' else 'results/humaneva_nf/models/0025.p'
     print('loading model from checkpoint: %s' % cp_path)
     model_cp = pickle.load(open(cp_path, "rb"))
     pose_prior.load_state_dict(model_cp['model_dict'])
@@ -424,7 +423,7 @@ if __name__ == '__main__':
     valid_ang = pickle.load(open('./data/h36m_valid_angle.p', "rb")) if cfg.dataset == 'h36m' else pickle.load(
         open('./data/humaneva_valid_angle.p', "rb"))
     if args.iter > 0:
-        cp_path = cfg.vae_model_path % args.iter
+        cp_path = cfg.model_path % args.iter
         print('loading model from checkpoint: %s' % cp_path)
         model_cp = pickle.load(open(cp_path, "rb"))
         model.load_state_dict(model_cp['model_dict'])
@@ -434,7 +433,7 @@ if __name__ == '__main__':
         overall_iter = 0
         stats = torch.zeros(cfg.nk)
         model.train()
-        for i in range(args.iter, cfg.num_vae_epoch):
+        for i in range(args.iter, cfg.num_epoch):
             stats = train(i, stats)
             if cfg.save_model_interval > 0 and (i + 1) % 10 == 0:
                 model.eval()
@@ -442,7 +441,7 @@ if __name__ == '__main__':
                     test(model, i)
                 model.train()
                 with to_cpu(model):
-                    cp_path = cfg.vae_model_path % (i + 1)
+                    cp_path = cfg.model_path % (i + 1)
                     model_cp = {'model_dict': model.state_dict(), 'meta': {'std': dataset.std, 'mean': dataset.mean}}
                     pickle.dump(model_cp, open(cp_path, 'wb'))
 

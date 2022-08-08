@@ -2,56 +2,20 @@ dataset: humaneva
 nz: 128
 t_his: 15
 t_pred: 60
-lambda_v: 1000
-beta: 0.01
-vae_specs:
-  rnn_type: gru
-  x_birnn: false
-  e_birnn: false
-  use_drnn_mlp: true
-vae_lr: 1.e-3
-batch_size: 64
-num_vae_epoch: 500
-num_vae_epoch_fix: 100
-num_vae_data_sample: 1000
-
+dropout: 0.1
 nk: 50
 nk1: 5
 nk2: 10
-dlow_batch_size: 64
-d_scale: 20
-lambda_j: 50
-lambda_recon: 2.0
-dlow_lr: 1.e-4
-dlow_specs:
-  model_name: NFDiag
-  rnn_type: gru
-  nh_mlp: [1024, 512]
-  x_birnn: false
-num_dlow_epoch: 500
-num_dlow_epoch_fix: 100
-num_dlow_data_sample: 1000
-data_hidden_dim: 128
-con_hidden_dim: 128
-
-nf_specs:
-  model_name: GCN
-  hidden_dim: 256
+lambdas: [ 0, 50.0, 0, 32, 2.0, 1.0, 0.002, 10, 10]
+specs:
   num_flow_layer: 1
-  num_ds_layer: 2
-  lambdas: [ 0, 50.0, 0, 32, 2.0, 1.0, 0.002, 10, 10]
-  parts: [ [ 7, 8, 9, 10, 11, 12], [ 0, 1, 2, 3, 4, 5, 6, 13 ] ]
-  alphas: [ 15, 50]
-  num_stage: 4
-  nz: 64
   n_pre: 8
   multimodal_path: ./data/humaneva_multi_modal/t_his15_1_thre0.500_t_pred60_thre0.010_index_filterd.npz
   data_candi_path: ./data/humaneva_multi_modal/data_candi_t_his15_t_pred60_skiprate15.npz
-vae_lr: 1.e-3
+
+lr: 1.e-3
 batch_size: 16
-num_vae_epoch: 500
-num_vae_epoch_fix: 100
-num_vae_data_sample: 2000
-con_hidden_dim: 128
-data_hidden_dim: 128
+num_epoch: 500
+num_epoch_fix: 100
+num_data_sample: 2000
 normalize_data: False

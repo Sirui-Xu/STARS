@@ -4,14 +4,15 @@ import os
 
 class Config:
 
-    def __init__(self, cfg_id, test=False):
+    def __init__(self, cfg_id, test=False, nf=False):
         self.id = cfg_id
         cfg_name = 'motion_pred/cfg/%s.yml' % cfg_id
         if not os.path.exists(cfg_name):
             print("Config file doesn't exist: %s" % cfg_name)
             exit(0)
         cfg = yaml.safe_load(open(cfg_name, 'r'))
-
+        if nf:
+            cfg_id += '_nf'
         # create dirs
         self.base_dir = 'results'
 
@@ -34,45 +35,17 @@ class Config:
         self.t_pred = cfg['t_pred']
         self.use_vel = cfg.get('use_vel', False)
 
-        # vae
         self.nz = cfg['nz']
-        self.beta = cfg['beta']
-        self.lambda_v = cfg.get('lambda_v', 0)
-        self.vae_lr = cfg['vae_lr']
-        self.vae_specs = cfg.get('vae_specs', dict())
-        self.num_vae_epoch = cfg['num_vae_epoch']
-        self.num_vae_epoch_fix = cfg.get('num_vae_epoch_fix', self.num_vae_epoch)
-        self.num_vae_data_sample = cfg['num_vae_data_sample']
-        self.vae_model_path = os.path.join(self.model_dir, 'vae_%04d.p')
+        self.lr = cfg['lr']
+        self.dropout = cfg.get('dropout', 0.1)
+        self.num_epoch = cfg['num_epoch']
+        self.num_epoch_fix = cfg.get('num_epoch_fix', self.num_epoch)
+        self.num_data_sample = cfg['num_data_sample']
+        self.model_path = os.path.join(self.model_dir, '%04d.p')
 
-        # dlow
-        self.nk = cfg.get('nk', 5)
+        self.nk = cfg.get('nk', 10)
         self.nk1 = cfg.get('nk1', 5)
         self.nk2 = cfg.get('nk2', 2)
-        self.dlow_batch_size = cfg.get('dlow_batch_size', 64)
-        self.dlow_beta = cfg.get('dlow_beta', 0.1)
-        self.d_scale = cfg.get('d_scale', 1)
-        self.lambda_kl = cfg.get('lambda_kl', 1)
-        self.lambda_j = cfg.get('lambda_j', 10)
-        self.lambda_recon = cfg.get('lambda_recon', 0.1)
-        self.neps = cfg.get('neps', 32)
-        self.dlow_lr = cfg.get('dlow_lr', 1e-3)
-        self.dlow_specs = cfg.get('dlow_specs', dict())
-        self.num_dlow_epoch = cfg.get('num_dlow_epoch', 500)
-        self.num_dlow_epoch_fix = cfg.get('num_dlow_epoch_fix', self.num_dlow_epoch)
-        self.num_dlow_data_sample = cfg.get('num_dlow_data_sample', 5000)
-        self.dlow_model_path = os.path.join(self.model_dir, 'dlow_%04d.p')
+        self.lambdas = cfg.get('lambdas', [])
 
-        # nf
-        # nf_specs:
-        #     model_name: NAF
-        #     hidden_dim: 256
-        #     num_flow_layer: 5
-        #     num_ds_layer: 1
-        # nf_lr: 1.e-3
-        # num_nf_epoch: 500
-        # num_nf_epoch_fix: 100
-        # num_nf_data_sample: 5000
-        self.nf_specs = cfg.get('nf_specs', dict())
-        self.data_hidden_dim = cfg.get('data_hidden_dim', 128)
-        self.con_hidden_dim = cfg.get('con_hidden_dim', 128)
+        self.specs = cfg.get('specs', dict())

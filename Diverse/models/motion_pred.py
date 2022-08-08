@@ -1,8 +1,7 @@
 from models import LinNF, model
 import numpy as np
 
-def get_model(cfg, dataset, model_type='h36m_naf'):
-    specs = cfg.vae_specs
+def get_model(cfg, dataset, model_type='h36m'):
     traj_dim = dataset.traj_dim // 3
 
     if model_type == 'h36m' or model_type == 'humaneva':
@@ -32,9 +31,9 @@ def get_model(cfg, dataset, model_type='h36m_naf'):
                  input_channels = 3,
                  input_time_frame = cfg.t_his,
                  output_time_frame = cfg.t_pred,
-                 st_gcnn_dropout = specs.get('dropout', 0.1),
+                 st_gcnn_dropout = cfg.dropout,
                  joints_to_consider = traj_dim,
                  pose_info=pose_info), \
                LinNF.LinNF(data_dim=traj_dim * 3, num_layer=3)
     elif model_type == 'h36m_nf' or model_type == 'humaneva_nf':
-        return LinNF.LinNF(data_dim=traj_dim, num_layer=cfg.nf_specs['num_flow_layer'])
+        return LinNF.LinNF(data_dim=dataset.traj_dim, num_layer=cfg.specs['num_flow_layer'])
