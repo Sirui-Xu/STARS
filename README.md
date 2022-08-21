@@ -9,7 +9,7 @@ Sirui Xu, Yu-Xiong Wang*, Liang-Yan Gui*
 
 ECCV 2022 (**oral**)
 
-[[website]()] [[paper]()] [[talk]()] [[demo](https://youtu.be/ibYfsvCg7tQ)]
+[[website](https://sirui-xu.github.io/STARS/)] [[paper]()] [[talk]()] [[demo](https://youtu.be/ibYfsvCg7tQ)]
 
 
 
