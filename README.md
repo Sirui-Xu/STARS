@@ -1,5 +1,5 @@
 # Diverse Human Motion Prediction Guided by Multi-Level *S*patial-*T*emporal *A*ncho*RS*
-![Loading STARS Overview](images/teaser.png "STARS")
+![Loading STARS Overview](images/teaser.gif "STARS")
 ---
 This repo contains the official implementation of the paper:
 
@@ -9,7 +9,7 @@ Sirui Xu, Yu-Xiong Wang*, Liang-Yan Gui*
 
 ECCV 2022 (**oral**)
 
-[[website](https://sirui-xu.github.io/STARS/)] [[paper](https://drive.google.com/file/d/1Pi-rRCEHw4a2hCQ435oNHN5BP2TgcRS9/view?usp=sharing)] [[talk](https://drive.google.com/file/d/1vWEgqqHiA454T6lxZTrxDZQNsZC9UP97/view?usp=sharing)] [[demo](https://youtu.be/ibYfsvCg7tQ)]
+[[website](https://sirui-xu.github.io/STARS/)] [[paper](https://sirui-xu.github.io/assets/pdf/STARS.pdf)] [[supp](https://sirui-xu.github.io/assets/pdf/STARS_supp.pdf)] [[demo](https://sirui-xu.github.io/STARS/images/demo.mp4)] [[poster](https://sirui-xu.github.io/assets/pdf/STARS_poster.pdf)] [[slides](https://sirui-xu.github.io/assets/pdf/STARS_slides.pdf)] [[talk](https://sirui-xu.github.io/STARS/images/talk.mp4)]
 
 Please refer to [deterministic human motion prediction](https://github.com/Sirui-Xu/STARS/deterministic) and [diverse human motion prediction](https://github.com/Sirui-Xu/STARS/diverse) for more details. 
 
