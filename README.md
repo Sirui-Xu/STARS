@@ -12,7 +12,7 @@ ECCV 2022 (**oral**)
 
 [[website](https://sirui-xu.github.io/STARS/)] [[paper](https://sirui-xu.github.io/assets/pdf/STARS.pdf)] [[supp](https://sirui-xu.github.io/assets/pdf/STARS_supp.pdf)] [[demo](https://sirui-xu.github.io/STARS/images/demo.mp4)] [[poster](https://sirui-xu.github.io/assets/pdf/STARS_poster.pdf)] [[slides](https://sirui-xu.github.io/assets/pdf/STARS_slides.pdf)] [[talk](https://sirui-xu.github.io/STARS/images/talk.mp4)]
 
-Please refer to [deterministic human motion prediction](https://github.com/Sirui-Xu/STARS/deterministic) and [diverse human motion prediction](https://github.com/Sirui-Xu/STARS/diverse) for more details. 
+Please refer to [deterministic human motion prediction](./deterministic/) and [diverse human motion prediction](./diverse/) for more details. 
 
 ## Citation
 If you find this work useful in your research, please cite:
