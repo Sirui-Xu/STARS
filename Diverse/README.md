@@ -1,5 +1,7 @@
 # Diverse Human Motion Forecasting
-![Loading Architecture Overview](../images/diverse.png "Architecture")
+  <img src="../images/diverse.gif" width="100%"/>
+
+
 ---
 ### Dependencies
 * Python >= 3.8
@@ -31,6 +33,10 @@ python main.py --cfg [h36m/humaneva]
    ```bash
  python main.py --cfg [h36m/humaneva] --mode viz --iter 500
   ```
+
+  ---
+
+  <img src="../images/diverse_results.gif" width="100%"/>
  ### Acknowledgments
  
  This code is based on the implementations of [GSPS](https://github.com/wei-mao-2019/gsps).

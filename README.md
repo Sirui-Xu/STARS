@@ -1,5 +1,6 @@
 # Diverse Human Motion Prediction Guided by Multi-Level *S*patial-*T*emporal *A*ncho*RS*
-![Loading STARS Overview](images/teaser.gif "STARS")
+<img src="images/teaser.gif" width="100%"/>
+
 ---
 This repo contains the official implementation of the paper:
 
