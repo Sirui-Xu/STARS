@@ -59,13 +59,16 @@ With global translation, we have the following commands:
  ```bash
  python main.py --input_n [number of historical sequence frames] --output_n [maximum number of predicted frames] --skip_rate [sampling rate] --n_pre [number of dct coefficients] --mode viz --model_path ./checkpoints/CKPT_3D_H36M --n_viz 5 --global_translation --data_dir ./data --version [long / short]
  ```
- 
-<img src="../images/human_viz_eating_0.gif" width="33%"/>
-<img src="../images/human_viz_greeting_0.gif" width="33%"/>
-<img src="../images/human_viz_sitting_1.gif" width="33%"/>
-<img src="../images/human_viz_sittingdown_1.gif" width="33%"/>
-<img src="../images/human_viz_waiting_1.gif" width="33%"/>
-<img src="../images/human_viz_walking_0.gif" width="33%"/>
+<p float="left">
+  <img src="../images/human_viz_eating_0.gif" width="33%"/>
+  <img src="../images/human_viz_greeting_0.gif" width="33%"/>
+  <img src="../images/human_viz_sitting_1.gif" width="33%"/>
+</p>
+ <p float="left">
+  <img src="../images/human_viz_sittingdown_1.gif" width="33%"/>
+  <img src="../images/human_viz_waiting_1.gif" width="33%"/>
+  <img src="../images/human_viz_walking_0.gif" width="33%"/>
+</p>
 
  ### Acknowledgments
  
