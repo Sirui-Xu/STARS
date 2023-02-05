@@ -67,18 +67,29 @@ class Datasets(Dataset):
                         the_sequence = torch.from_numpy(the_sequence).float().cuda()
                         # remove global rotation and translation
                         the_sequence[:, 0:6] = 0
-                        the_sequence = data_utils.expmap2xyz_torch(the_sequence)
-                        for bias in range(self.sample_rate):
-                            even_list = range(bias, n, self.sample_rate)
-                            num_frames = len(even_list)
-                            p3d = the_sequence[even_list]
-                            self.p3d[key] = p3d.view(num_frames, -1).cpu().data.numpy()
+#                         the_sequence = data_utils.expmap2xyz_torch(the_sequence)
+#                         for bias in range(self.sample_rate):
+#                             even_list = range(bias, n, self.sample_rate)
+#                             num_frames = len(even_list)
+#                             p3d = the_sequence[even_list]
+#                             self.p3d[key] = p3d.view(num_frames, -1).cpu().data.numpy()
 
-                            valid_frames = np.arange(0, num_frames - seq_len + 1)
-                            tmp_data_idx_1 = [key] * len(valid_frames)
-                            tmp_data_idx_2 = list(valid_frames)
-                            self.data_idx.extend(zip(tmp_data_idx_1, tmp_data_idx_2))
-                            key += 1
+#                             valid_frames = np.arange(0, num_frames - seq_len + 1)
+#                             tmp_data_idx_1 = [key] * len(valid_frames)
+#                             tmp_data_idx_2 = list(valid_frames)
+#                             self.data_idx.extend(zip(tmp_data_idx_1, tmp_data_idx_2))
+#                             key += 1
+                        p3d = data_utils.expmap2xyz_torch(the_sequence)
+                        # self.p3d[(subj, action, subact)] = p3d.view(num_frames, -1).cpu().data.numpy()
+                        self.p3d[key] = p3d.view(num_frames, -1).cpu().data.numpy()
+
+                        valid_frames = np.arange(0, num_frames - seq_len + 1)
+
+                        # tmp_data_idx_1 = [(subj, action, subact)] * len(valid_frames)
+                        tmp_data_idx_1 = [key] * len(valid_frames)
+                        tmp_data_idx_2 = list(valid_frames)
+                        self.data_idx.extend(zip(tmp_data_idx_1, tmp_data_idx_2))
+                        key += 1
                 else:
                     print("Reading subject {0}, action {1}, subaction {2}".format(subj, action, 1))
                     filename = '{0}/S{1}/{2}_{3}.txt'.format(self.path_to_data, subj, action, 1)
