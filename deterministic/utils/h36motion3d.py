@@ -63,7 +63,9 @@ class Datasets(Dataset):
                         filename = '{0}/S{1}/{2}_{3}.txt'.format(self.path_to_data, subj, action, subact)
                         the_sequence = data_utils.readCSVasFloat(filename)
                         n, d = the_sequence.shape
-                        the_sequence = np.array(the_sequence)
+                        even_list = range(0, n, self.sample_rate)
+                        num_frames = len(even_list)
+                        the_sequence = np.array(the_sequence[even_list, :])
                         the_sequence = torch.from_numpy(the_sequence).float().cuda()
                         # remove global rotation and translation
                         the_sequence[:, 0:6] = 0
