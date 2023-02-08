@@ -1,0 +1,65 @@
+Using device: cuda
+total number of parameters of the network is: 470350
+/home/siruixu2/STARS/deterministic/utils/h36motion3d.py:35: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+  subs = np.array([[1, 6, 7, 8, 9], [11], [5]])
+Reading subject 5, action walking, subaction 1
+Reading subject 5, action walking, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : walking is: tensor(62.1598, device='cuda:0')
+Reading subject 5, action eating, subaction 1
+Reading subject 5, action eating, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : eating is: tensor(74.1929, device='cuda:0')
+Reading subject 5, action smoking, subaction 1
+Reading subject 5, action smoking, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : smoking is: tensor(63.4633, device='cuda:0')
+Reading subject 5, action discussion, subaction 1
+Reading subject 5, action discussion, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : discussion is: tensor(100.5397, device='cuda:0')
+Reading subject 5, action directions, subaction 1
+Reading subject 5, action directions, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : directions is: tensor(107.2075, device='cuda:0')
+Reading subject 5, action greeting, subaction 1
+Reading subject 5, action greeting, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : greeting is: tensor(136.5020, device='cuda:0')
+Reading subject 5, action phoning, subaction 1
+Reading subject 5, action phoning, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : phoning is: tensor(103.7901, device='cuda:0')
+Reading subject 5, action posing, subaction 1
+Reading subject 5, action posing, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : posing is: tensor(128.9071, device='cuda:0')
+Reading subject 5, action purchases, subaction 1
+Reading subject 5, action purchases, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : purchases is: tensor(139.1467, device='cuda:0')
+Reading subject 5, action sitting, subaction 1
+Reading subject 5, action sitting, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : sitting is: tensor(116.9298, device='cuda:0')
+Reading subject 5, action sittingdown, subaction 1
+Reading subject 5, action sittingdown, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : sittingdown is: tensor(147.2827, device='cuda:0')
+Reading subject 5, action takingphoto, subaction 1
+Reading subject 5, action takingphoto, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : takingphoto is: tensor(118.6062, device='cuda:0')
+Reading subject 5, action waiting, subaction 1
+Reading subject 5, action waiting, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : waiting is: tensor(103.2302, device='cuda:0')
+Reading subject 5, action walkingdog, subaction 1
+Reading subject 5, action walkingdog, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : walkingdog is: tensor(151.8853, device='cuda:0')
+Reading subject 5, action walkingtogether, subaction 1
+Reading subject 5, action walkingtogether, subaction 2
+>>> test action for sequences: 256
+loss at test subject for action : walkingtogether is: tensor(68.3922, device='cuda:0')
+overall average loss in mm is: tensor(108.1490, device='cuda:0')

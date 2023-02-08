@@ -1,0 +1,542 @@
+Using device: cuda
+total number of parameters of the network is: 470350
+/home/siruixu2/STARS/deterministic/utils/h36motion3d.py:35: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
+  subs = np.array([[1, 6, 7, 8, 9], [11], [5]])
+Reading subject 1, action walking, subaction 1
+Reading subject 1, action walking, subaction 2
+Reading subject 1, action eating, subaction 1
+Reading subject 1, action eating, subaction 2
+Reading subject 1, action smoking, subaction 1
+Reading subject 1, action smoking, subaction 2
+Reading subject 1, action discussion, subaction 1
+Reading subject 1, action discussion, subaction 2
+Reading subject 1, action directions, subaction 1
+Reading subject 1, action directions, subaction 2
+Reading subject 1, action greeting, subaction 1
+Reading subject 1, action greeting, subaction 2
+Reading subject 1, action phoning, subaction 1
+Reading subject 1, action phoning, subaction 2
+Reading subject 1, action posing, subaction 1
+Reading subject 1, action posing, subaction 2
+Reading subject 1, action purchases, subaction 1
+Reading subject 1, action purchases, subaction 2
+Reading subject 1, action sitting, subaction 1
+Reading subject 1, action sitting, subaction 2
+Reading subject 1, action sittingdown, subaction 1
+Reading subject 1, action sittingdown, subaction 2
+Reading subject 1, action takingphoto, subaction 1
+Reading subject 1, action takingphoto, subaction 2
+Reading subject 1, action waiting, subaction 1
+Reading subject 1, action waiting, subaction 2
+Reading subject 1, action walkingdog, subaction 1
+Reading subject 1, action walkingdog, subaction 2
+Reading subject 1, action walkingtogether, subaction 1
+Reading subject 1, action walkingtogether, subaction 2
+Reading subject 6, action walking, subaction 1
+Reading subject 6, action walking, subaction 2
+Reading subject 6, action eating, subaction 1
+Reading subject 6, action eating, subaction 2
+Reading subject 6, action smoking, subaction 1
+Reading subject 6, action smoking, subaction 2
+Reading subject 6, action discussion, subaction 1
+Reading subject 6, action discussion, subaction 2
+Reading subject 6, action directions, subaction 1
+Reading subject 6, action directions, subaction 2
+Reading subject 6, action greeting, subaction 1
+Reading subject 6, action greeting, subaction 2
+Reading subject 6, action phoning, subaction 1
+Reading subject 6, action phoning, subaction 2
+Reading subject 6, action posing, subaction 1
+Reading subject 6, action posing, subaction 2
+Reading subject 6, action purchases, subaction 1
+Reading subject 6, action purchases, subaction 2
+Reading subject 6, action sitting, subaction 1
+Reading subject 6, action sitting, subaction 2
+Reading subject 6, action sittingdown, subaction 1
+Reading subject 6, action sittingdown, subaction 2
+Reading subject 6, action takingphoto, subaction 1
+Reading subject 6, action takingphoto, subaction 2
+Reading subject 6, action waiting, subaction 1
+Reading subject 6, action waiting, subaction 2
+Reading subject 6, action walkingdog, subaction 1
+Reading subject 6, action walkingdog, subaction 2
+Reading subject 6, action walkingtogether, subaction 1
+Reading subject 6, action walkingtogether, subaction 2
+Reading subject 7, action walking, subaction 1
+Reading subject 7, action walking, subaction 2
+Reading subject 7, action eating, subaction 1
+Reading subject 7, action eating, subaction 2
+Reading subject 7, action smoking, subaction 1
+Reading subject 7, action smoking, subaction 2
+Reading subject 7, action discussion, subaction 1
+Reading subject 7, action discussion, subaction 2
+Reading subject 7, action directions, subaction 1
+Reading subject 7, action directions, subaction 2
+Reading subject 7, action greeting, subaction 1
+Reading subject 7, action greeting, subaction 2
+Reading subject 7, action phoning, subaction 1
+Reading subject 7, action phoning, subaction 2
+Reading subject 7, action posing, subaction 1
+Reading subject 7, action posing, subaction 2
+Reading subject 7, action purchases, subaction 1
+Reading subject 7, action purchases, subaction 2
+Reading subject 7, action sitting, subaction 1
+Reading subject 7, action sitting, subaction 2
+Reading subject 7, action sittingdown, subaction 1
+Reading subject 7, action sittingdown, subaction 2
+Reading subject 7, action takingphoto, subaction 1
+Reading subject 7, action takingphoto, subaction 2
+Reading subject 7, action waiting, subaction 1
+Reading subject 7, action waiting, subaction 2
+Reading subject 7, action walkingdog, subaction 1
+Reading subject 7, action walkingdog, subaction 2
+Reading subject 7, action walkingtogether, subaction 1
+Reading subject 7, action walkingtogether, subaction 2
+Reading subject 8, action walking, subaction 1
+Reading subject 8, action walking, subaction 2
+Reading subject 8, action eating, subaction 1
+Reading subject 8, action eating, subaction 2
+Reading subject 8, action smoking, subaction 1
+Reading subject 8, action smoking, subaction 2
+Reading subject 8, action discussion, subaction 1
+Reading subject 8, action discussion, subaction 2
+Reading subject 8, action directions, subaction 1
+Reading subject 8, action directions, subaction 2
+Reading subject 8, action greeting, subaction 1
+Reading subject 8, action greeting, subaction 2
+Reading subject 8, action phoning, subaction 1
+Reading subject 8, action phoning, subaction 2
+Reading subject 8, action posing, subaction 1
+Reading subject 8, action posing, subaction 2
+Reading subject 8, action purchases, subaction 1
+Reading subject 8, action purchases, subaction 2
+Reading subject 8, action sitting, subaction 1
+Reading subject 8, action sitting, subaction 2
+Reading subject 8, action sittingdown, subaction 1
+Reading subject 8, action sittingdown, subaction 2
+Reading subject 8, action takingphoto, subaction 1
+Reading subject 8, action takingphoto, subaction 2
+Reading subject 8, action waiting, subaction 1
+Reading subject 8, action waiting, subaction 2
+Reading subject 8, action walkingdog, subaction 1
+Reading subject 8, action walkingdog, subaction 2
+Reading subject 8, action walkingtogether, subaction 1
+Reading subject 8, action walkingtogether, subaction 2
+Reading subject 9, action walking, subaction 1
+Reading subject 9, action walking, subaction 2
+Reading subject 9, action eating, subaction 1
+Reading subject 9, action eating, subaction 2
+Reading subject 9, action smoking, subaction 1
+Reading subject 9, action smoking, subaction 2
+Reading subject 9, action discussion, subaction 1
+Reading subject 9, action discussion, subaction 2
+Reading subject 9, action directions, subaction 1
+Reading subject 9, action directions, subaction 2
+Reading subject 9, action greeting, subaction 1
+Reading subject 9, action greeting, subaction 2
+Reading subject 9, action phoning, subaction 1
+Reading subject 9, action phoning, subaction 2
+Reading subject 9, action posing, subaction 1
+Reading subject 9, action posing, subaction 2
+Reading subject 9, action purchases, subaction 1
+Reading subject 9, action purchases, subaction 2
+Reading subject 9, action sitting, subaction 1
+Reading subject 9, action sitting, subaction 2
+Reading subject 9, action sittingdown, subaction 1
+Reading subject 9, action sittingdown, subaction 2
+Reading subject 9, action takingphoto, subaction 1
+Reading subject 9, action takingphoto, subaction 2
+Reading subject 9, action waiting, subaction 1
+Reading subject 9, action waiting, subaction 2
+Reading subject 9, action walkingdog, subaction 1
+Reading subject 9, action walkingdog, subaction 2
+Reading subject 9, action walkingtogether, subaction 1
+Reading subject 9, action walkingtogether, subaction 2
+>>> Training dataset length: 181584
+Reading subject 11, action walking, subaction 1
+Reading subject 11, action walking, subaction 2
+Reading subject 11, action eating, subaction 1
+Reading subject 11, action eating, subaction 2
+Reading subject 11, action smoking, subaction 1
+Reading subject 11, action smoking, subaction 2
+Reading subject 11, action discussion, subaction 1
+Reading subject 11, action discussion, subaction 2
+Reading subject 11, action directions, subaction 1
+Reading subject 11, action directions, subaction 2
+Reading subject 11, action greeting, subaction 1
+Reading subject 11, action greeting, subaction 2
+Reading subject 11, action phoning, subaction 1
+Reading subject 11, action phoning, subaction 2
+Reading subject 11, action posing, subaction 1
+Reading subject 11, action posing, subaction 2
+Reading subject 11, action purchases, subaction 1
+Reading subject 11, action purchases, subaction 2
+Reading subject 11, action sitting, subaction 1
+Reading subject 11, action sitting, subaction 2
+Reading subject 11, action sittingdown, subaction 1
+Reading subject 11, action sittingdown, subaction 2
+Reading subject 11, action takingphoto, subaction 1
+Reading subject 11, action takingphoto, subaction 2
+Reading subject 11, action waiting, subaction 1
+Reading subject 11, action waiting, subaction 2
+Reading subject 11, action walkingdog, subaction 1
+Reading subject 11, action walkingdog, subaction 2
+Reading subject 11, action walkingtogether, subaction 1
+Reading subject 11, action walkingtogether, subaction 2
+>>> Validation dataset length: 30752
+0it [00:00, ?it/s][1,     1]  mpjpe loss: 138.945
+200it [02:21,  1.42it/s][1,   201]  mpjpe loss: 130.621
+400it [04:42,  1.41it/s][1,   401]  mpjpe loss: 112.684
+600it [07:02,  1.45it/s][1,   601]  mpjpe loss: 113.657
+710it [08:18,  1.42it/s]
+[1]  mpjpe loss: 121.475
+[1, all]  validation loss: 72.581
+----saving model-----
+0it [00:00, ?it/s][2,     1]  mpjpe loss: 115.383
+200it [02:20,  1.43it/s][2,   201]  mpjpe loss: 100.742
+400it [04:40,  1.44it/s][2,   401]  mpjpe loss: 103.069
+600it [07:00,  1.44it/s][2,   601]  mpjpe loss: 104.817
+710it [08:17,  1.43it/s]
+[2]  mpjpe loss: 105.497
+[2, all]  validation loss: 68.941
+----saving model-----
+0it [00:00, ?it/s][3,     1]  mpjpe loss: 98.850
+200it [02:20,  1.42it/s][3,   201]  mpjpe loss: 107.516
+400it [04:40,  1.42it/s][3,   401]  mpjpe loss: 99.576
+600it [07:00,  1.42it/s][3,   601]  mpjpe loss: 101.823
+710it [08:16,  1.43it/s]
+[3]  mpjpe loss: 101.063
+[3, all]  validation loss: 69.057
+0it [00:00, ?it/s][4,     1]  mpjpe loss: 97.201
+200it [02:20,  1.45it/s][4,   201]  mpjpe loss: 99.433
+400it [04:39,  1.45it/s][4,   401]  mpjpe loss: 102.360
+600it [06:59,  1.42it/s][4,   601]  mpjpe loss: 95.427
+710it [08:15,  1.43it/s]
+[4]  mpjpe loss: 98.444
+[4, all]  validation loss: 68.358
+----saving model-----
+0it [00:00, ?it/s][5,     1]  mpjpe loss: 93.643
+200it [02:20,  1.42it/s][5,   201]  mpjpe loss: 93.383
+400it [04:40,  1.44it/s][5,   401]  mpjpe loss: 104.959
+600it [06:59,  1.44it/s][5,   601]  mpjpe loss: 103.180
+710it [08:16,  1.43it/s]
+[5]  mpjpe loss: 96.408
+[5, all]  validation loss: 69.086
+0it [00:00, ?it/s][6,     1]  mpjpe loss: 90.556
+200it [02:20,  1.42it/s][6,   201]  mpjpe loss: 92.589
+400it [04:41,  1.43it/s][6,   401]  mpjpe loss: 95.315
+600it [07:01,  1.44it/s][6,   601]  mpjpe loss: 93.960
+710it [08:17,  1.43it/s]
+[6]  mpjpe loss: 94.901
+[6, all]  validation loss: 69.320
+0it [00:00, ?it/s][7,     1]  mpjpe loss: 96.364
+200it [02:21,  1.40it/s][7,   201]  mpjpe loss: 95.783
+400it [04:43,  1.38it/s][7,   401]  mpjpe loss: 97.805
+600it [07:06,  1.41it/s][7,   601]  mpjpe loss: 96.815
+710it [08:24,  1.41it/s]
+[7]  mpjpe loss: 93.657
+[7, all]  validation loss: 68.179
+----saving model-----
+0it [00:00, ?it/s][8,     1]  mpjpe loss: 89.184
+200it [02:21,  1.40it/s][8,   201]  mpjpe loss: 89.909
+400it [04:42,  1.42it/s][8,   401]  mpjpe loss: 96.685
+600it [07:01,  1.45it/s][8,   601]  mpjpe loss: 87.200
+710it [08:18,  1.42it/s]
+[8]  mpjpe loss: 92.842
+[8, all]  validation loss: 68.700
+0it [00:00, ?it/s][9,     1]  mpjpe loss: 97.878
+200it [02:20,  1.42it/s][9,   201]  mpjpe loss: 89.556
+400it [04:41,  1.44it/s][9,   401]  mpjpe loss: 93.746
+600it [07:00,  1.44it/s][9,   601]  mpjpe loss: 93.764
+710it [08:16,  1.43it/s]
+[9]  mpjpe loss: 92.167
+[9, all]  validation loss: 67.940
+----saving model-----
+0it [00:00, ?it/s][10,     1]  mpjpe loss: 89.735
+200it [02:20,  1.42it/s][10,   201]  mpjpe loss: 88.669
+400it [04:40,  1.45it/s][10,   401]  mpjpe loss: 88.495
+600it [06:59,  1.45it/s][10,   601]  mpjpe loss: 92.830
+710it [08:16,  1.43it/s]
+[10]  mpjpe loss: 91.617
+[10, all]  validation loss: 69.449
+0it [00:00, ?it/s][11,     1]  mpjpe loss: 85.828
+200it [02:20,  1.41it/s][11,   201]  mpjpe loss: 90.528
+400it [04:41,  1.43it/s][11,   401]  mpjpe loss: 90.081
+600it [07:00,  1.44it/s][11,   601]  mpjpe loss: 94.246
+710it [08:17,  1.43it/s]
+[11]  mpjpe loss: 91.079
+[11, all]  validation loss: 67.493
+----saving model-----
+0it [00:00, ?it/s][12,     1]  mpjpe loss: 91.439
+200it [02:20,  1.45it/s][12,   201]  mpjpe loss: 90.044
+400it [04:39,  1.42it/s][12,   401]  mpjpe loss: 94.421
+600it [07:00,  1.44it/s][12,   601]  mpjpe loss: 85.217
+710it [08:17,  1.43it/s]
+[12]  mpjpe loss: 90.585
+[12, all]  validation loss: 68.744
+0it [00:00, ?it/s][13,     1]  mpjpe loss: 90.079
+200it [02:20,  1.44it/s][13,   201]  mpjpe loss: 84.115
+400it [04:39,  1.44it/s][13,   401]  mpjpe loss: 88.109
+600it [06:58,  1.45it/s][13,   601]  mpjpe loss: 92.960
+710it [08:14,  1.44it/s]
+[13]  mpjpe loss: 90.181
+[13, all]  validation loss: 69.197
+0it [00:00, ?it/s][14,     1]  mpjpe loss: 96.327
+200it [02:20,  1.44it/s][14,   201]  mpjpe loss: 89.875
+400it [04:39,  1.44it/s][14,   401]  mpjpe loss: 94.263
+600it [06:59,  1.41it/s][14,   601]  mpjpe loss: 93.425
+710it [08:16,  1.43it/s]
+[14]  mpjpe loss: 89.773
+[14, all]  validation loss: 68.622
+0it [00:00, ?it/s][15,     1]  mpjpe loss: 89.538
+200it [02:20,  1.42it/s][15,   201]  mpjpe loss: 85.410
+400it [04:39,  1.44it/s][15,   401]  mpjpe loss: 79.379
+600it [06:59,  1.43it/s][15,   601]  mpjpe loss: 87.167
+710it [08:15,  1.43it/s]
+[15]  mpjpe loss: 89.406
+[15, all]  validation loss: 68.530
+0it [00:00, ?it/s][16,     1]  mpjpe loss: 84.764
+200it [02:20,  1.41it/s][16,   201]  mpjpe loss: 86.805
+400it [04:41,  1.43it/s][16,   401]  mpjpe loss: 88.826
+600it [07:01,  1.44it/s][16,   601]  mpjpe loss: 90.613
+710it [08:18,  1.42it/s]
+[16]  mpjpe loss: 87.160
+[16, all]  validation loss: 68.093
+0it [00:00, ?it/s][17,     1]  mpjpe loss: 86.078
+200it [02:20,  1.42it/s][17,   201]  mpjpe loss: 85.238
+400it [04:39,  1.42it/s][17,   401]  mpjpe loss: 88.321
+600it [07:00,  1.41it/s][17,   601]  mpjpe loss: 88.082
+710it [08:18,  1.42it/s]
+[17]  mpjpe loss: 86.632
+[17, all]  validation loss: 68.464
+0it [00:00, ?it/s][18,     1]  mpjpe loss: 85.592
+200it [02:22,  1.41it/s][18,   201]  mpjpe loss: 83.912
+400it [04:44,  1.41it/s][18,   401]  mpjpe loss: 86.909
+600it [07:05,  1.43it/s][18,   601]  mpjpe loss: 87.921
+710it [08:22,  1.41it/s]
+[18]  mpjpe loss: 86.440
+[18, all]  validation loss: 68.324
+0it [00:00, ?it/s][19,     1]  mpjpe loss: 85.012
+200it [02:21,  1.41it/s][19,   201]  mpjpe loss: 84.671
+400it [04:43,  1.42it/s][19,   401]  mpjpe loss: 86.627
+600it [07:05,  1.40it/s][19,   601]  mpjpe loss: 84.313
+710it [08:23,  1.41it/s]
+[19]  mpjpe loss: 86.290
+[19, all]  validation loss: 69.076
+0it [00:00, ?it/s][20,     1]  mpjpe loss: 87.189
+200it [02:22,  1.41it/s][20,   201]  mpjpe loss: 78.021
+400it [04:44,  1.41it/s][20,   401]  mpjpe loss: 83.897
+600it [07:05,  1.42it/s][20,   601]  mpjpe loss: 84.045
+710it [08:23,  1.41it/s]
+[20]  mpjpe loss: 86.154
+[20, all]  validation loss: 68.129
+0it [00:00, ?it/s][21,     1]  mpjpe loss: 84.605
+200it [02:21,  1.42it/s][21,   201]  mpjpe loss: 87.308
+400it [04:43,  1.43it/s][21,   401]  mpjpe loss: 83.162
+600it [07:04,  1.42it/s][21,   601]  mpjpe loss: 81.693
+710it [08:22,  1.41it/s]
+[21]  mpjpe loss: 86.029
+[21, all]  validation loss: 68.325
+0it [00:00, ?it/s][22,     1]  mpjpe loss: 82.773
+200it [02:21,  1.42it/s][22,   201]  mpjpe loss: 85.202
+400it [04:43,  1.42it/s][22,   401]  mpjpe loss: 81.291
+600it [07:04,  1.42it/s][22,   601]  mpjpe loss: 85.008
+710it [08:21,  1.42it/s]
+[22]  mpjpe loss: 85.965
+[22, all]  validation loss: 68.425
+0it [00:00, ?it/s][23,     1]  mpjpe loss: 82.016
+200it [02:22,  1.40it/s][23,   201]  mpjpe loss: 87.937
+400it [04:44,  1.43it/s][23,   401]  mpjpe loss: 82.558
+600it [07:06,  1.41it/s][23,   601]  mpjpe loss: 85.247
+710it [08:24,  1.41it/s]
+[23]  mpjpe loss: 85.845
+[23, all]  validation loss: 68.557
+0it [00:00, ?it/s][24,     1]  mpjpe loss: 90.527
+200it [02:22,  1.39it/s][24,   201]  mpjpe loss: 86.377
+400it [04:43,  1.42it/s][24,   401]  mpjpe loss: 85.147
+600it [07:05,  1.41it/s][24,   601]  mpjpe loss: 83.005
+710it [08:22,  1.41it/s]
+[24]  mpjpe loss: 85.792
+[24, all]  validation loss: 68.922
+0it [00:00, ?it/s][25,     1]  mpjpe loss: 85.280
+200it [02:22,  1.41it/s][25,   201]  mpjpe loss: 84.452
+400it [04:44,  1.39it/s][25,   401]  mpjpe loss: 88.121
+600it [07:06,  1.41it/s][25,   601]  mpjpe loss: 86.415
+710it [08:24,  1.41it/s]
+[25]  mpjpe loss: 85.711
+[25, all]  validation loss: 68.847
+0it [00:00, ?it/s][26,     1]  mpjpe loss: 85.236
+200it [02:20,  1.42it/s][26,   201]  mpjpe loss: 83.773
+400it [04:42,  1.41it/s][26,   401]  mpjpe loss: 82.272
+600it [07:04,  1.41it/s][26,   601]  mpjpe loss: 85.631
+710it [08:21,  1.41it/s]
+[26]  mpjpe loss: 85.433
+[26, all]  validation loss: 68.477
+0it [00:00, ?it/s][27,     1]  mpjpe loss: 78.868
+200it [02:22,  1.38it/s][27,   201]  mpjpe loss: 83.677
+400it [04:44,  1.40it/s][27,   401]  mpjpe loss: 84.983
+600it [07:04,  1.44it/s][27,   601]  mpjpe loss: 88.785
+710it [08:20,  1.42it/s]
+[27]  mpjpe loss: 85.376
+[27, all]  validation loss: 68.449
+0it [00:00, ?it/s][28,     1]  mpjpe loss: 81.621
+200it [02:20,  1.44it/s][28,   201]  mpjpe loss: 89.715
+400it [04:40,  1.43it/s][28,   401]  mpjpe loss: 85.346
+600it [07:00,  1.41it/s][28,   601]  mpjpe loss: 86.746
+710it [08:17,  1.43it/s]
+[28]  mpjpe loss: 85.341
+[28, all]  validation loss: 68.579
+0it [00:00, ?it/s][29,     1]  mpjpe loss: 85.585
+200it [02:20,  1.42it/s][29,   201]  mpjpe loss: 86.387
+400it [04:40,  1.39it/s][29,   401]  mpjpe loss: 91.238
+600it [07:00,  1.45it/s][29,   601]  mpjpe loss: 85.110
+710it [08:16,  1.43it/s]
+[29]  mpjpe loss: 85.334
+[29, all]  validation loss: 68.752
+0it [00:00, ?it/s][30,     1]  mpjpe loss: 86.084
+200it [02:20,  1.43it/s][30,   201]  mpjpe loss: 81.371
+400it [04:40,  1.42it/s][30,   401]  mpjpe loss: 79.959
+600it [07:00,  1.42it/s][30,   601]  mpjpe loss: 87.081
+710it [08:16,  1.43it/s]
+[30]  mpjpe loss: 85.325
+[30, all]  validation loss: 68.350
+0it [00:00, ?it/s][31,     1]  mpjpe loss: 86.464
+200it [02:20,  1.43it/s][31,   201]  mpjpe loss: 84.615
+400it [04:39,  1.45it/s][31,   401]  mpjpe loss: 90.958
+600it [06:59,  1.44it/s][31,   601]  mpjpe loss: 83.015
+710it [08:15,  1.43it/s]
+[31]  mpjpe loss: 85.335
+[31, all]  validation loss: 68.645
+0it [00:00, ?it/s][32,     1]  mpjpe loss: 86.632
+200it [02:20,  1.43it/s][32,   201]  mpjpe loss: 87.406
+400it [04:40,  1.43it/s][32,   401]  mpjpe loss: 84.761
+600it [07:00,  1.43it/s][32,   601]  mpjpe loss: 85.215
+710it [08:16,  1.43it/s]
+[32]  mpjpe loss: 85.325
+[32, all]  validation loss: 68.569
+0it [00:00, ?it/s][33,     1]  mpjpe loss: 83.239
+200it [02:19,  1.43it/s][33,   201]  mpjpe loss: 85.272
+400it [04:39,  1.45it/s][33,   401]  mpjpe loss: 82.486
+600it [07:00,  1.43it/s][33,   601]  mpjpe loss: 89.608
+710it [08:17,  1.43it/s]
+[33]  mpjpe loss: 85.317
+[33, all]  validation loss: 68.473
+0it [00:00, ?it/s][34,     1]  mpjpe loss: 83.202
+200it [02:19,  1.43it/s][34,   201]  mpjpe loss: 83.464
+400it [04:38,  1.42it/s][34,   401]  mpjpe loss: 90.376
+600it [06:58,  1.43it/s][34,   601]  mpjpe loss: 77.486
+710it [08:15,  1.43it/s]
+[34]  mpjpe loss: 85.273
+[34, all]  validation loss: 68.525
+0it [00:00, ?it/s][35,     1]  mpjpe loss: 84.908
+200it [02:19,  1.43it/s][35,   201]  mpjpe loss: 89.949
+400it [04:39,  1.43it/s][35,   401]  mpjpe loss: 82.502
+600it [07:00,  1.42it/s][35,   601]  mpjpe loss: 82.904
+710it [08:16,  1.43it/s]
+[35]  mpjpe loss: 85.294
+[35, all]  validation loss: 68.505
+0it [00:00, ?it/s][36,     1]  mpjpe loss: 86.583
+200it [02:20,  1.41it/s][36,   201]  mpjpe loss: 85.686
+400it [04:39,  1.43it/s][36,   401]  mpjpe loss: 88.322
+600it [06:59,  1.45it/s][36,   601]  mpjpe loss: 87.005
+710it [08:16,  1.43it/s]
+[36]  mpjpe loss: 85.246
+[36, all]  validation loss: 68.453
+0it [00:00, ?it/s][37,     1]  mpjpe loss: 80.532
+200it [02:20,  1.42it/s][37,   201]  mpjpe loss: 85.628
+400it [04:40,  1.43it/s][37,   401]  mpjpe loss: 82.208
+600it [07:00,  1.42it/s][37,   601]  mpjpe loss: 79.484
+710it [08:17,  1.43it/s]
+[37]  mpjpe loss: 85.241
+[37, all]  validation loss: 68.704
+0it [00:00, ?it/s][38,     1]  mpjpe loss: 85.588
+200it [02:20,  1.42it/s][38,   201]  mpjpe loss: 89.124
+400it [04:39,  1.43it/s][38,   401]  mpjpe loss: 83.840
+600it [06:58,  1.44it/s][38,   601]  mpjpe loss: 85.892
+710it [08:15,  1.43it/s]
+[38]  mpjpe loss: 85.264
+[38, all]  validation loss: 68.685
+0it [00:00, ?it/s][39,     1]  mpjpe loss: 92.502
+200it [02:20,  1.43it/s][39,   201]  mpjpe loss: 88.685
+400it [04:40,  1.43it/s][39,   401]  mpjpe loss: 88.106
+600it [07:00,  1.43it/s][39,   601]  mpjpe loss: 83.135
+710it [08:16,  1.43it/s]
+[39]  mpjpe loss: 85.255
+[39, all]  validation loss: 68.337
+0it [00:00, ?it/s][40,     1]  mpjpe loss: 82.619
+200it [02:20,  1.41it/s][40,   201]  mpjpe loss: 84.197
+400it [04:39,  1.44it/s][40,   401]  mpjpe loss: 77.709
+600it [06:59,  1.41it/s][40,   601]  mpjpe loss: 87.799
+710it [08:16,  1.43it/s]
+[40]  mpjpe loss: 85.242
+[40, all]  validation loss: 68.582
+0it [00:00, ?it/s][41,     1]  mpjpe loss: 85.978
+200it [02:19,  1.42it/s][41,   201]  mpjpe loss: 86.373
+400it [04:39,  1.42it/s][41,   401]  mpjpe loss: 86.905
+600it [06:59,  1.42it/s][41,   601]  mpjpe loss: 86.396
+710it [08:16,  1.43it/s]
+[41]  mpjpe loss: 85.231
+[41, all]  validation loss: 68.825
+0it [00:00, ?it/s][42,     1]  mpjpe loss: 80.021
+200it [02:19,  1.44it/s][42,   201]  mpjpe loss: 84.633
+400it [04:39,  1.42it/s][42,   401]  mpjpe loss: 90.748
+600it [06:59,  1.43it/s][42,   601]  mpjpe loss: 90.055
+710it [08:15,  1.43it/s]
+[42]  mpjpe loss: 85.236
+[42, all]  validation loss: 68.661
+0it [00:00, ?it/s][43,     1]  mpjpe loss: 83.050
+200it [02:19,  1.45it/s][43,   201]  mpjpe loss: 84.963
+400it [04:40,  1.42it/s][43,   401]  mpjpe loss: 79.732
+600it [06:59,  1.43it/s][43,   601]  mpjpe loss: 85.815
+710it [08:16,  1.43it/s]
+[43]  mpjpe loss: 85.215
+[43, all]  validation loss: 68.507
+0it [00:00, ?it/s][44,     1]  mpjpe loss: 86.326
+200it [02:20,  1.42it/s][44,   201]  mpjpe loss: 84.111
+400it [04:39,  1.45it/s][44,   401]  mpjpe loss: 88.102
+600it [06:58,  1.45it/s][44,   601]  mpjpe loss: 87.197
+710it [08:14,  1.44it/s]
+[44]  mpjpe loss: 85.216
+[44, all]  validation loss: 68.672
+0it [00:00, ?it/s][45,     1]  mpjpe loss: 85.671
+200it [02:19,  1.42it/s][45,   201]  mpjpe loss: 88.472
+400it [04:39,  1.43it/s][45,   401]  mpjpe loss: 83.523
+600it [06:59,  1.42it/s][45,   601]  mpjpe loss: 88.520
+710it [08:16,  1.43it/s]
+[45]  mpjpe loss: 85.216
+[45, all]  validation loss: 68.557
+0it [00:00, ?it/s][46,     1]  mpjpe loss: 84.783
+200it [02:19,  1.42it/s][46,   201]  mpjpe loss: 82.058
+400it [04:40,  1.43it/s][46,   401]  mpjpe loss: 83.799
+600it [06:59,  1.43it/s][46,   601]  mpjpe loss: 86.981
+710it [08:16,  1.43it/s]
+[46]  mpjpe loss: 85.221
+[46, all]  validation loss: 68.392
+0it [00:00, ?it/s][47,     1]  mpjpe loss: 85.486
+200it [02:20,  1.44it/s][47,   201]  mpjpe loss: 83.940
+400it [04:40,  1.43it/s][47,   401]  mpjpe loss: 87.693
+600it [07:00,  1.42it/s][47,   601]  mpjpe loss: 84.700
+710it [08:16,  1.43it/s]
+[47]  mpjpe loss: 85.234
+[47, all]  validation loss: 68.537
+0it [00:00, ?it/s][48,     1]  mpjpe loss: 86.737
+200it [02:19,  1.44it/s][48,   201]  mpjpe loss: 86.945
+400it [04:39,  1.45it/s][48,   401]  mpjpe loss: 89.184
+600it [06:58,  1.44it/s][48,   601]  mpjpe loss: 85.168
+710it [08:14,  1.44it/s]
+[48]  mpjpe loss: 85.233
+[48, all]  validation loss: 68.430
+0it [00:00, ?it/s][49,     1]  mpjpe loss: 89.411
+200it [02:20,  1.41it/s][49,   201]  mpjpe loss: 87.242
+400it [04:41,  1.45it/s][49,   401]  mpjpe loss: 84.574
+600it [07:01,  1.43it/s][49,   601]  mpjpe loss: 84.269
+710it [08:17,  1.43it/s]
+[49]  mpjpe loss: 85.228
+[49, all]  validation loss: 68.387
+0it [00:00, ?it/s][50,     1]  mpjpe loss: 83.995
+200it [02:19,  1.44it/s][50,   201]  mpjpe loss: 85.296
+400it [04:39,  1.45it/s][50,   401]  mpjpe loss: 84.658
+600it [06:58,  1.41it/s][50,   601]  mpjpe loss: 85.716
+710it [08:15,  1.43it/s]
+[50]  mpjpe loss: 85.209
+[50, all]  validation loss: 68.446
