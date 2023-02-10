@@ -10,7 +10,7 @@ Sirui Xu, Yu-Xiong Wang*, Liang-Yan Gui*
 
 ECCV 2022 (**oral**)
 
-[[website](https://sirui-xu.github.io/STARS/)] [[paper](https://sirui-xu.github.io/assets/pdf/STARS.pdf)] [[supp](https://sirui-xu.github.io/assets/pdf/STARS_supp.pdf)] [[demo](https://sirui-xu.github.io/STARS/images/demo.mp4)] [[poster](https://sirui-xu.github.io/assets/pdf/STARS_poster.pdf)] [[slides](https://sirui-xu.github.io/assets/pdf/STARS_slides.pdf)] [[talk](https://sirui-xu.github.io/STARS/images/talk.mp4)]
+[[website](https://sirui-xu.github.io/STARS/)] [[arxiv](https://arxiv.org/abs/2302.04860)] [[demo](https://sirui-xu.github.io/STARS/images/demo.mp4)] [[poster](https://sirui-xu.github.io/assets/pdf/STARS_poster.pdf)] [[slides](https://sirui-xu.github.io/assets/pdf/STARS_slides.pdf)] [[talk](https://sirui-xu.github.io/STARS/images/talk.mp4)]
 
 Please refer to [deterministic human motion prediction](./deterministic/) and [diverse human motion prediction](./diverse/) for more details. 
 
