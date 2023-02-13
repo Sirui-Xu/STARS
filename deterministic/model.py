@@ -268,40 +268,42 @@ class Model(nn.Module):
         joints_to_consider=len(dim_used)
         self.joints_to_consider=joints_to_consider
         self.st_gcnns=nn.ModuleList()
-        self.st_gcnns.append(ST_GCNN_layer(input_channels,128,[3,1],1,n_pre,
+        self.st_gcnns.append(ST_GCNN_layer(input_channels,64,[3,1],1,n_pre,
                                            joints_to_consider,st_gcnn_dropout,version='full',dim_used=dim_used))
 
-        self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
+        self.st_gcnns.append(ST_GCNN_layer(64,32,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))
             
-        self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
+        self.st_gcnns.append(ST_GCNN_layer(32,64,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))
                                        
-        self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
+        self.st_gcnns.append(ST_GCNN_layer(64,32,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))   
         
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
+        self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
-        self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
+        self.st_gcnns.append(ST_GCNN_layer(32,64,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
+        self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
-        self.st_gcnns.append(ST_GCNN_layer(128,64,[3,1],1,n_pre,
+        self.st_gcnns.append(ST_GCNN_layer(64,32,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))   
         
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
-        # self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
+        self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
-        self.st_gcnns.append(ST_GCNN_layer(64,128,[3,1],1,n_pre,
+        self.st_gcnns.append(ST_GCNN_layer(32,64,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout,version=version,dim_used=dim_used))
         
         self.st_gcnns[-1].gcn.A = self.st_gcnns[-3].gcn.A
+        self.st_gcnns[-1].gcn.T = self.st_gcnns[-3].gcn.T
 
-        self.st_gcnns.append(ST_GCNN_layer(128,input_channels,[3,1],1,n_pre,
+        self.st_gcnns.append(ST_GCNN_layer(64,input_channels,[3,1],1,n_pre,
                                                joints_to_consider,st_gcnn_dropout,version='full',dim_used=dim_used))  
-        self.st_gcnns[-1].gcn.A = self.st_gcnns[0].gcn.A    
+        # self.st_gcnns[-1].gcn.A = self.st_gcnns[0].gcn.A    
+        # self.st_gcnns[-1].gcn.T = self.st_gcnns[0].gcn.T
 
         self.dct_m, self.idct_m = self.get_dct_matrix(self.input_time_frame + self.output_time_frame)
         self.n_pre = n_pre

@@ -1,5 +1,5 @@
  # Deterministic Human Motion Forecasting on Human3.6M
-![Loading Architecture Overview](../images/deterministic.png "Architecture")
+ 
 ---
 ### Dependencies
 * Python >= 3.8

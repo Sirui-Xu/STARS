@@ -1,65 +1,65 @@
 Using device: cuda
-total number of parameters of the network is: 211446
+total number of parameters of the network is: 228386
 /home/siruixu2/STARS/deterministic/utils/h36motion3d.py:35: VisibleDeprecationWarning: Creating an ndarray from ragged nested sequences (which is a list-or-tuple of lists-or-tuples-or ndarrays with different lengths or shapes) is deprecated. If you meant to do this, you must specify 'dtype=object' when creating the ndarray.
   subs = np.array([[1, 6, 7, 8, 9], [11], [5]])
 Reading subject 5, action walking, subaction 1
 Reading subject 5, action walking, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : walking is: tensor(63.5342, device='cuda:0')
+loss at test subject for action : walking is: tensor(62.5825, device='cuda:0')
 Reading subject 5, action eating, subaction 1
 Reading subject 5, action eating, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : eating is: tensor(75.7586, device='cuda:0')
+loss at test subject for action : eating is: tensor(75.7492, device='cuda:0')
 Reading subject 5, action smoking, subaction 1
 Reading subject 5, action smoking, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : smoking is: tensor(70.1533, device='cuda:0')
+loss at test subject for action : smoking is: tensor(70.8636, device='cuda:0')
 Reading subject 5, action discussion, subaction 1
 Reading subject 5, action discussion, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : discussion is: tensor(117.9153, device='cuda:0')
+loss at test subject for action : discussion is: tensor(117.5079, device='cuda:0')
 Reading subject 5, action directions, subaction 1
 Reading subject 5, action directions, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : directions is: tensor(105.3267, device='cuda:0')
+loss at test subject for action : directions is: tensor(105.9733, device='cuda:0')
 Reading subject 5, action greeting, subaction 1
 Reading subject 5, action greeting, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : greeting is: tensor(136.4922, device='cuda:0')
+loss at test subject for action : greeting is: tensor(136.1776, device='cuda:0')
 Reading subject 5, action phoning, subaction 1
 Reading subject 5, action phoning, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : phoning is: tensor(104.5539, device='cuda:0')
+loss at test subject for action : phoning is: tensor(103.5522, device='cuda:0')
 Reading subject 5, action posing, subaction 1
 Reading subject 5, action posing, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : posing is: tensor(170.3798, device='cuda:0')
+loss at test subject for action : posing is: tensor(170.8327, device='cuda:0')
 Reading subject 5, action purchases, subaction 1
 Reading subject 5, action purchases, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : purchases is: tensor(138.2769, device='cuda:0')
+loss at test subject for action : purchases is: tensor(136.9234, device='cuda:0')
 Reading subject 5, action sitting, subaction 1
 Reading subject 5, action sitting, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : sitting is: tensor(115.2838, device='cuda:0')
+loss at test subject for action : sitting is: tensor(116.5239, device='cuda:0')
 Reading subject 5, action sittingdown, subaction 1
 Reading subject 5, action sittingdown, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : sittingdown is: tensor(142.1066, device='cuda:0')
+loss at test subject for action : sittingdown is: tensor(143.7810, device='cuda:0')
 Reading subject 5, action takingphoto, subaction 1
 Reading subject 5, action takingphoto, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : takingphoto is: tensor(117.3027, device='cuda:0')
+loss at test subject for action : takingphoto is: tensor(116.2274, device='cuda:0')
 Reading subject 5, action waiting, subaction 1
 Reading subject 5, action waiting, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : waiting is: tensor(104.4395, device='cuda:0')
+loss at test subject for action : waiting is: tensor(105.0237, device='cuda:0')
 Reading subject 5, action walkingdog, subaction 1
 Reading subject 5, action walkingdog, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : walkingdog is: tensor(149.8306, device='cuda:0')
+loss at test subject for action : walkingdog is: tensor(148.2339, device='cuda:0')
 Reading subject 5, action walkingtogether, subaction 1
 Reading subject 5, action walkingtogether, subaction 2
 >>> test action for sequences: 256
-loss at test subject for action : walkingtogether is: tensor(68.7518, device='cuda:0')
-overall average loss in mm is: tensor(112.0071, device='cuda:0')
+loss at test subject for action : walkingtogether is: tensor(69.2638, device='cuda:0')
+overall average loss in mm is: tensor(111.9477, device='cuda:0')

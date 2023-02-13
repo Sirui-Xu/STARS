@@ -1,6 +1,4 @@
 # Diverse Human Motion Forecasting
-  <img src="../images/diverse.gif" width="100%"/>
-
 
 ---
 ### Dependencies
