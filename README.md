@@ -1,7 +1,8 @@
+# Diverse Human Motion Prediction Guided by Multi-Level *S*patial-*T*emporal *A*ncho*RS*
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/diverse-human-motion-prediction-guided-by/human-pose-forecasting-on-human36m)](https://paperswithcode.com/sota/human-pose-forecasting-on-human36m?p=diverse-human-motion-prediction-guided-by)
 
 [![PWC](https://img.shields.io/endpoint.svg?url=https://paperswithcode.com/badge/diverse-human-motion-prediction-guided-by/human-pose-forecasting-on-humaneva-i)](https://paperswithcode.com/sota/human-pose-forecasting-on-humaneva-i?p=diverse-human-motion-prediction-guided-by)
-# Diverse Human Motion Prediction Guided by Multi-Level *S*patial-*T*emporal *A*ncho*RS*
+
 <img src="images/teaser.gif" width="100%"/>
 
 ---
